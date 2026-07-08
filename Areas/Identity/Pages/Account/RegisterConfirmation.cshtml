@@ -1,0 +1,41 @@
+﻿@page
+@model RegisterConfirmationModel
+
+@{
+    ViewData["Title"] = "Register confirmation";
+}
+
+<main class="auth-main flex-grow-1 d-flex align-items-center justify-content-center px-3 px-sm-4 py-5">
+<section class="auth-shell w-100" aria-labelledby="register-confirmation-title">
+    <header class="auth-header text-center">
+        <div class="auth-brand mx-auto mb-3 mb-md-2" aria-hidden="true">
+            <span class="auth-brand-mark">
+                <i class="bi bi-person-square"></i>
+            </span>
+        </div>
+
+        <h1 id="register-confirmation-title" class="auth-title mb-0">Please confirm your account</h1>
+    </header>
+    
+    <article class="auth-card card border-0 mx-auto mt-4 mt-md-3">
+            <div class="card-body auth-card-body">
+                @{
+                    if (Model.DisplayConfirmAccountLink)
+                    {
+                        <p class="auth-label">
+                            This app does not currently have a real email sender registered, see <a href="https://aka.ms/aspaccountconf">these docs</a> for how to configure a real email sender.
+                            Normally this would be emailed: <a id="confirm-link" href="@Model.EmailConfirmationUrl">Click here to confirm your account</a>
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="auth-label">
+                            Please check your email to confirm your account.
+                        </p>
+                    }
+                }
+            </div>
+        </article>
+</section>
+</main>
+

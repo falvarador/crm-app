@@ -1,0 +1,123 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css");
+
+@import "modules/auth.css";
+
+html {
+  font-size: 16px;
+  min-height: 100%;
+  position: relative;
+}
+
+/* Light tokens (default) mapped to Bootstrap custom properties */
+:root,
+[data-bs-theme="light"] {
+  --bs-body-bg: #f9f9fc;
+  --bs-body-color: #1a1c1e;
+  --bs-primary: #0050cb;
+  --bs-primary-rgb: 0, 80, 203;
+  --bs-secondary: #585f66;
+  --bs-secondary-rgb: 88, 95, 102;
+  --bs-border-color: #e2e2e5;
+  --bs-border-radius: 0.5rem;
+  --bs-border-radius-lg: 1rem;
+  --bs-link-color: #0050cb;
+  --bs-link-hover-color: #0054d6;
+  --bs-focus-ring-color: rgba(0, 80, 203, 0.18);
+  --bs-focus-ring-width: 0.25rem;
+
+  --auth-surface: #ffffff;
+  --auth-surface-inset: #ffffff;
+  --auth-title-color: #1a1c1e;
+  --auth-label-color: #1f2740;
+  --auth-placeholder-color: #6b7285;
+  --auth-border: #c2c6d8;
+  --auth-divider: #e2e2e5;
+  --auth-link-muted: #424656;
+  --auth-logo-bg: linear-gradient(145deg, rgba(0, 80, 203, 0.08), rgba(0, 80, 203, 0.02)), #ffffff;
+  --auth-logo-mark: #0050cb;
+  --auth-logo-shadow: 0 2px 0 rgba(255, 255, 255, 0.9);
+  --auth-card-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+  --auth-btn-bg: #0050cb;
+  --auth-btn-color: #ffffff;
+  --auth-btn-hover: #0054d6;
+  --auth-btn-shadow: 0 8px 18px rgba(0, 80, 203, 0.18);
+
+  --auth-card-padding-block: 1.5rem;
+  --auth-card-padding-inline: 1.25rem;
+  --auth-card-padding-block-end: 1.75rem;
+  --auth-control-padding-block: 0.875rem;
+  --auth-control-padding-inline: 1rem;
+  --auth-control-min-height: 3.75rem;
+  --auth-password-toggle-offset: 1rem;
+  --auth-password-control-padding-inline-end: 3rem;
+  --auth-submit-min-height: 3.75rem;
+  --auth-divider-margin-block-start: 1.75rem;
+  --auth-divider-margin-block-end: 1.25rem;
+}
+
+/* Midnight Slate dark tokens using Bootstrap native color mode selector */
+:root[data-bs-theme="dark"],
+[data-bs-theme="dark"] {
+  --bs-body-bg: #0b1326;
+  --bs-body-color: #dae2fd;
+  --bs-primary: #c0c1ff;
+  --bs-primary-rgb: 192, 193, 255;
+  --bs-secondary: #b9c8de;
+  --bs-secondary-rgb: 185, 200, 222;
+  --bs-border-color: #464554;
+  --bs-link-color: #c0c1ff;
+  --bs-link-hover-color: #e1e0ff;
+  --bs-focus-ring-color: rgba(192, 193, 255, 0.28);
+
+  --auth-surface: #171f33;
+  --auth-surface-inset: #131b2e;
+  --auth-title-color: #dae2fd;
+  --auth-label-color: #c7c4d7;
+  --auth-placeholder-color: #908fa0;
+  --auth-border: #464554;
+  --auth-divider: #464554;
+  --auth-link-muted: #b9c8de;
+  --auth-logo-bg: linear-gradient(145deg, rgba(192, 193, 255, 0.12), rgba(192, 193, 255, 0.04)), #131b2e;
+  --auth-logo-mark: #c0c1ff;
+  --auth-logo-shadow: 0 0 14px rgba(192, 193, 255, 0.16);
+  --auth-card-shadow: none;
+  --auth-btn-bg: #8083ff;
+  --auth-btn-color: #0d0096;
+  --auth-btn-hover: #9093ff;
+  --auth-btn-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+@media (min-width: 768px) {
+  :root,
+  [data-bs-theme="light"],
+  :root[data-bs-theme="dark"],
+  [data-bs-theme="dark"] {
+    --auth-card-padding-block: 1.25rem;
+    --auth-card-padding-inline: 1.75rem;
+    --auth-card-padding-block-end: 1.5rem;
+    --auth-control-padding-block: 0.625rem;
+    --auth-control-padding-inline: 0.875rem;
+    --auth-control-min-height: 1.25rem;
+    --auth-password-toggle-offset: 0.875rem;
+    --auth-password-control-padding-inline-end: 2.75rem;
+    --auth-submit-min-height: 2.75rem;
+    --auth-divider-margin-block-start: 1.5rem;
+    --auth-divider-margin-block-end: 1rem;
+  }
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  color: var(--bs-body-color);
+  background-color: var(--bs-body-bg);
+}
+
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus,
+a:focus-visible {
+  box-shadow: 0 0 0 var(--bs-focus-ring-width) var(--bs-focus-ring-color);
+}

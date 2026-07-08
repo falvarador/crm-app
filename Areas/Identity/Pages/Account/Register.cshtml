@@ -1,0 +1,94 @@
+﻿@page
+@model RegisterModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<main class="auth-main flex-grow-1 d-flex align-items-center justify-content-center px-3 px-sm-4 py-5">
+    <section class="auth-shell w-100" aria-labelledby="register-title">
+        <header class="auth-header text-center">
+            <div class="auth-brand mx-auto mb-4" aria-hidden="true">
+                <span class="auth-brand-mark">
+                    <i class="bi bi-person-square"></i>
+                </span>
+            </div>
+
+            <h1 id="register-title" class="auth-title mb-0">Please register</h1>
+        </header>
+        
+        <article class="auth-card card border-0 mx-auto mt-4">
+            <div class="card-body auth-card-body">
+                <form method="post" asp-route-returnUrl="@Model.ReturnUrl" class="auth-form" novalidate>
+                    <div asp-validation-summary="ModelOnly" class="auth-summary text-danger" role="alert"></div>
+           
+                    <div class="auth-field mb-4">
+                        <label asp-for="Input.Email" class="form-label auth-label"></label>
+                        <input asp-for="Input.Email"
+                               type="email"
+                               class="form-control auth-control"
+                               autocomplete="email"
+                               placeholder="name@company.com" />
+                        <span asp-validation-for="Input.Email" class="auth-feedback text-danger"></span>
+                    </div>
+                    
+                    <div class="auth-field mb-4">
+                        <label asp-for="Input.Password" class="form-label auth-label"></label>
+                        <div x-data="{ show: false }" class="auth-password-group position-relative">
+                            <input asp-for="Input.Password"
+                                   :type="show ? 'text' : 'password'"
+                                   class="form-control auth-control pe-5"
+                                   autocomplete="current-password"
+                                   placeholder="••••••••" />
+                            <button type="button"
+                                    class="auth-password-toggle btn p-0 border-0 bg-transparent"
+                                    aria-label="Show password">
+                                <i class="bi"
+                                   x-on:click="show = !show"
+                                   :class="show ? 'bi-eye-slash' : 'bi-eye'"></i>
+                            </button>
+                        </div>
+                        
+                        <span asp-validation-for="Input.Password" class="auth-feedback text-danger"></span>
+                    </div>  
+                    
+                    <div class="auth-field mb-4">
+                        <label asp-for="Input.ConfirmPassword" class="form-label auth-label"></label>
+                        <div x-data="{ show: false }" class="auth-password-group position-relative">
+                            <input asp-for="Input.ConfirmPassword"
+                                   :type="show ? 'text' : 'password'"
+                                   class="form-control auth-control pe-5"
+                                   autocomplete="current-password"
+                                   placeholder="••••••••" />
+                            <button type="button"
+                                    class="auth-password-toggle btn p-0 border-0 bg-transparent"
+                                    aria-label="Show password">
+                                <i class="bi"
+                                   x-on:click="show = !show"
+                                   :class="show ? 'bi-eye-slash' : 'bi-eye'"></i>
+                            </button>
+                        </div>
+                        
+                        <span asp-validation-for="Input.ConfirmPassword" class="auth-feedback text-danger"></span>
+                    </div>
+                    
+                    <button class="btn btn-primary auth-submit w-100" type="submit">
+                        Register
+                    </button>
+                    
+                    <hr class="auth-divider" />
+
+                    <nav class="auth-links text-center" aria-label="Sing in link">
+                        <p class="mb-3">
+                            <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl" class="auth-link">Sign in into your account</a>
+                        </p>
+                    </nav>
+                </form>
+            </div>
+        </article>
+    </section>
+</main>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
