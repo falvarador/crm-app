@@ -1,0 +1,48 @@
+﻿@page
+@model IndexModel
+
+@{
+    ViewData["Title"] = "Manage your account";
+    ViewData["ActivePage"] = ManageNavPages.Index;
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<main class="auth-main d-flex justify-content-center px-3 px-sm-4 py-5">
+<section class="auth-shell w-100" aria-labelledby="manage-account-title">
+    <header class="auth-header text-center">
+        <h3 id="manage-account-title" class="auth-title mb-0">
+            @ViewData["Title"]
+        </h3>
+        <p class="app-label">
+            Use this page to manage your account information.
+        </p>
+    </header>
+    <article class="auth-card card border-0 mx-auto mt-4">
+        <div class="card-body auth-card-body">
+            <form id="profile-form" method="post" class="auth-form">
+                <div asp-validation-summary="ModelOnly" class="auth-summary text-danger" role="alert"></div>
+                
+                <div class="auth-field mb-4">
+                    <label asp-for="Username" class="form-label app-label"></label>
+                    <input asp-for="Username" class="form-control auth-control" placeholder="Please choose your username." disabled />
+                </div>
+                
+                <div class="auth-field mb-4">
+                    <label asp-for="Input.PhoneNumber" class="form-label app-label"></label>
+                    <input asp-for="Input.PhoneNumber" class="form-control auth-control" placeholder="Please enter your phone number."/>
+                    <span asp-validation-for="Input.PhoneNumber" class="auth-feedback text-danger"></span>
+                </div>
+                
+                <button id="update-profile-button" type="submit" class="btn btn-primary auth-submit w-100">
+                    Save
+                </button>
+            </form>
+        </div>
+    </article>
+</section>
+</main>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,6 +1,5 @@
 .auth-main {
     min-height: 100vh;
-    background: var(--bs-body-bg);
 }
 
 .auth-shell {
@@ -63,15 +62,22 @@
     margin-top: 0.25rem;
     font-size: 0.75rem;
     line-height: 1rem;
+    
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding-left: 0;
+        padding-bottom: 1rem;
+    }
 }
 
-.auth-label,
+.app-label,
 .auth-check-label {
     font-family: Inter, system-ui, sans-serif;
     font-size: 0.875rem;
     font-weight: 500;
     line-height: 1.25rem;
-    color: var(--auth-label-color);
+    color: var(--app-label-color);
 }
 
 .auth-control {
@@ -183,30 +189,6 @@
 
 .auth-link-muted {
     color: var(--auth-link-muted);
-}
-
-.auth-footer {
-    background: transparent;
-    border-color: var(--auth-border) !important;
-}
-
-.auth-footer-copy {
-    color: var(--auth-label-color);
-    font-size: 1rem;
-    line-height: 1.5;
-}
-
-.auth-footer-link {
-    color: var(--auth-label-color);
-    text-decoration: none;
-    font-size: 1rem;
-    line-height: 1.5;
-}
-
-.auth-footer-link:hover,
-.auth-footer-link:focus-visible {
-    color: var(--bs-link-color);
-    text-decoration: underline;
 }
 
 @media (max-width: 575.98px) {

@@ -23,7 +23,7 @@
                     <div asp-validation-summary="ModelOnly" class="auth-summary text-danger" role="alert"></div>
            
                     <div class="auth-field mb-4">
-                        <label asp-for="Input.Email" class="form-label auth-label"></label>
+                        <label asp-for="Input.Email" class="form-label app-label"></label>
                         <input asp-for="Input.Email"
                                type="email"
                                class="form-control auth-control"
@@ -33,42 +33,42 @@
                     </div>
                     
                     <div class="auth-field mb-4">
-                        <label asp-for="Input.Password" class="form-label auth-label"></label>
-                        <div x-data="{ show: false }" class="auth-password-group position-relative">
+                        <label asp-for="Input.Password" class="form-label app-label"></label>
+                        <password-toggle>
+                            <div class="auth-password-group position-relative">
                             <input asp-for="Input.Password"
-                                   :type="show ? 'text' : 'password'"
+                                   type="password"
                                    class="form-control auth-control pe-5"
                                    autocomplete="current-password"
                                    placeholder="••••••••" />
-                            <button type="button"
-                                    class="auth-password-toggle btn p-0 border-0 bg-transparent"
-                                    aria-label="Show password">
-                                <i class="bi"
-                                   x-on:click="show = !show"
-                                   :class="show ? 'bi-eye-slash' : 'bi-eye'"></i>
-                            </button>
-                        </div>
-                        
+                                <button type="button"
+                                        class="auth-password-toggle btn p-0 border-0 bg-transparent"
+                                        aria-label="Show password"
+                                        aria-pressed="false">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                        </password-toggle>
                         <span asp-validation-for="Input.Password" class="auth-feedback text-danger"></span>
                     </div>  
                     
                     <div class="auth-field mb-4">
-                        <label asp-for="Input.ConfirmPassword" class="form-label auth-label"></label>
-                        <div x-data="{ show: false }" class="auth-password-group position-relative">
-                            <input asp-for="Input.ConfirmPassword"
-                                   :type="show ? 'text' : 'password'"
-                                   class="form-control auth-control pe-5"
-                                   autocomplete="current-password"
-                                   placeholder="••••••••" />
-                            <button type="button"
-                                    class="auth-password-toggle btn p-0 border-0 bg-transparent"
-                                    aria-label="Show password">
-                                <i class="bi"
-                                   x-on:click="show = !show"
-                                   :class="show ? 'bi-eye-slash' : 'bi-eye'"></i>
-                            </button>
-                        </div>
-                        
+                        <label asp-for="Input.ConfirmPassword" class="form-label app-label"></label>
+                        <password-toggle>
+                            <div class="auth-password-group position-relative">
+                                <input asp-for="Input.ConfirmPassword"
+                                       type="password"
+                                       class="form-control auth-control pe-5"
+                                       autocomplete="current-password"
+                                       placeholder="••••••••" />
+                                <button type="button"
+                                        class="auth-password-toggle btn p-0 border-0 bg-transparent"
+                                        aria-label="Show password"
+                                        aria-pressed="false">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                        </password-toggle>
                         <span asp-validation-for="Input.ConfirmPassword" class="auth-feedback text-danger"></span>
                     </div>
                     

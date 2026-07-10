@@ -1,0 +1,23 @@
+<header class="app-topbar py-2 py-md-3">
+    <nav class="container-fluid d-flex align-items-center justify-content-between" aria-label="Barra superior de la aplicación">
+        
+        <div class="d-flex align-items-center">
+            <a class="navbar-brand mb-0 fw-semibold text-primary app-topbar-brand" asp-page="/Index" aria-label="CRM App">
+                CRM App
+            </a>
+        </div>
+        
+        <div class="d-flex align-items-center nav-utils gap-3" role="toolbar" aria-label="Acciones rápidas">
+            
+            <partial name="_LoginPartial"/>
+            
+            <button type="button" 
+                    class="icon-btn" 
+                    x-on:click="$store.theme.toggle()"
+                    :class="{ 'active': $store.theme.current === 'light' }"
+                    aria-label="Change theme" title="Change theme" id="theme-toggle">
+                <i class="bi" :class="$store.theme.current === 'dark' ? 'bi-sun' : 'bi-moon'"></i>
+            </button>
+        </div>
+    </nav>
+</header>

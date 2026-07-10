@@ -1,0 +1,24 @@
+.app-footer {
+    background: transparent;
+    border-color: var(--auth-border) !important;
+    margin: 0.5rem;
+}
+
+.app-footer-copy {
+    color: var(--app-label-color);
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.app-footer-link {
+    color: var(--app-label-color);
+    text-decoration: none;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.app-footer-link:hover,
+.app-footer-link:focus-visible {
+    color: var(--bs-link-color);
+    text-decoration: underline;
+}
