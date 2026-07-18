@@ -9,18 +9,18 @@
 <h3>@ViewData["Title"]</h3>
 <partial name="_StatusMessage" for="StatusMessage" />
 
-<main class="auth-main d-flex justify-content-center px-3 px-sm-4 py-5">
-<section class="auth-shell w-100" aria-labelledby="manage-email-title">
-    <header class="auth-header text-center">
-        <h3 id="manage-email-title" class="auth-title mb-0">
+<main class="app-main d-flex justify-content-center px-3 px-sm-4 py-5">
+<section class="app-shell w-100" aria-labelledby="manage-email-title">
+    <header class="app-header text-center">
+        <h3 id="manage-email-title" class="app-title mb-0">
             @ViewData["Title"]
         </h3>
         <p class="app-label">
             Use this page to manage your account information.
         </p>
     </header>
-    <article class="auth-card card border-0 mx-auto mt-4">
-        <div class="card-body auth-card-body">
+    <article class="app-card card border-0 mx-auto mt-4">
+        <div class="card-body app-card-body">
             <form id="email-form" method="post">
                 <div asp-validation-summary="All" class="text-danger" role="alert"></div>
                 @if (Model.IsEmailConfirmed)

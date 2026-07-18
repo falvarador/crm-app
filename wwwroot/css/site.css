@@ -1,9 +1,12 @@
+/*Bootstrap icons*/
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css");
 
+/*App components*/
 @import "modules/auth.css";
 @import "components/navbar.css";
 @import "components/footer.css";
 
+/*Reset*/
 html {
   font-size: 16px;
   min-height: 100%;
@@ -27,34 +30,34 @@ html {
   --bs-focus-ring-color: rgba(0, 80, 203, 0.18);
   --bs-focus-ring-width: 0.25rem;
 
-  --auth-surface: #ffffff;
-  --auth-surface-inset: #ffffff;
-  --auth-title-color: #1a1c1e;
+  --app-surface: #ffffff;
+  --app-surface-inset: #ffffff;
+  --app-title-color: #1a1c1e;
   --app-label-color: #1f2740;
-  --auth-placeholder-color: #6b7285;
-  --auth-border: #c2c6d8;
-  --auth-divider: #e2e2e5;
-  --auth-link-muted: #424656;
-  --auth-logo-bg: linear-gradient(145deg, rgba(0, 80, 203, 0.08), rgba(0, 80, 203, 0.02)), #ffffff;
-  --auth-logo-mark: #0050cb;
-  --auth-logo-shadow: 0 2px 0 rgba(255, 255, 255, 0.9);
-  --auth-card-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
-  --auth-btn-bg: #0050cb;
-  --auth-btn-color: #ffffff;
-  --auth-btn-hover: #0054d6;
-  --auth-btn-shadow: 0 8px 18px rgba(0, 80, 203, 0.18);
+  --app-placeholder-color: #6b7285;
+  --app-border: #c2c6d8;
+  --app-divider: #e2e2e5;
+  --app-link-muted: #424656;
+  --app-logo-bg: linear-gradient(145deg, rgba(0, 80, 203, 0.08), rgba(0, 80, 203, 0.02)), #ffffff;
+  --app-logo-mark: #0050cb;
+  --app-logo-shadow: 0 2px 0 rgba(255, 255, 255, 0.9);
+  --app-card-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+  --app-btn-bg: #0050cb;
+  --app-btn-color: #ffffff;
+  --app-btn-hover: #0054d6;
+  --app-btn-shadow: 0 8px 18px rgba(0, 80, 203, 0.18);
 
-  --auth-card-padding-block: 1.5rem;
-  --auth-card-padding-inline: 1.25rem;
-  --auth-card-padding-block-end: 1.75rem;
-  --auth-control-padding-block: 0.875rem;
-  --auth-control-padding-inline: 1rem;
-  --auth-control-min-height: 3.75rem;
-  --auth-password-toggle-offset: 1rem;
-  --auth-password-control-padding-inline-end: 3rem;
-  --auth-submit-min-height: 3.75rem;
-  --auth-divider-margin-block-start: 1.75rem;
-  --auth-divider-margin-block-end: 1.25rem;
+  --app-card-padding-block: 1.5rem;
+  --app-card-padding-inline: 1.25rem;
+  --app-card-padding-block-end: 1.75rem;
+  --app-control-padding-block: 0.875rem;
+  --app-control-padding-inline: 1rem;
+  --app-control-min-height: 3.75rem;
+  --app-password-toggle-offset: 1rem;
+  --app-password-control-padding-inline-end: 3rem;
+  --app-submit-min-height: 3.75rem;
+  --app-divider-margin-block-start: 1.75rem;
+  --app-divider-margin-block-end: 1.25rem;
 }
 
 /* Midnight Slate dark tokens using Bootstrap native color mode selector */
@@ -71,22 +74,22 @@ html {
   --bs-link-hover-color: #e1e0ff;
   --bs-focus-ring-color: rgba(192, 193, 255, 0.28);
 
-  --auth-surface: #171f33;
-  --auth-surface-inset: #131b2e;
-  --auth-title-color: #dae2fd;
+  --app-surface: #171f33;
+  --app-surface-inset: #131b2e;
+  --app-title-color: #dae2fd;
   --app-label-color: #c7c4d7;
-  --auth-placeholder-color: #908fa0;
-  --auth-border: #464554;
-  --auth-divider: #464554;
-  --auth-link-muted: #b9c8de;
-  --auth-logo-bg: linear-gradient(145deg, rgba(192, 193, 255, 0.12), rgba(192, 193, 255, 0.04)), #131b2e;
-  --auth-logo-mark: #c0c1ff;
-  --auth-logo-shadow: 0 0 14px rgba(192, 193, 255, 0.16);
-  --auth-card-shadow: none;
-  --auth-btn-bg: #8083ff;
-  --auth-btn-color: #0d0096;
-  --auth-btn-hover: #9093ff;
-  --auth-btn-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+  --app-placeholder-color: #908fa0;
+  --app-border: #464554;
+  --app-divider: #464554;
+  --app-link-muted: #b9c8de;
+  --app-logo-bg: linear-gradient(145deg, rgba(192, 193, 255, 0.12), rgba(192, 193, 255, 0.04)), #131b2e;
+  --app-logo-mark: #c0c1ff;
+  --app-logo-shadow: 0 0 14px rgba(192, 193, 255, 0.16);
+  --app-card-shadow: none;
+  --app-btn-bg: #8083ff;
+  --app-btn-color: #0d0096;
+  --app-btn-hover: #9093ff;
+  --app-btn-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
 @media (min-width: 768px) {
@@ -94,17 +97,17 @@ html {
   [data-bs-theme="light"],
   :root[data-bs-theme="dark"],
   [data-bs-theme="dark"] {
-    --auth-card-padding-block: 1.25rem;
-    --auth-card-padding-inline: 1.75rem;
-    --auth-card-padding-block-end: 1.5rem;
-    --auth-control-padding-block: 0.625rem;
-    --auth-control-padding-inline: 0.875rem;
-    --auth-control-min-height: 1.25rem;
-    --auth-password-toggle-offset: 0.875rem;
-    --auth-password-control-padding-inline-end: 2.75rem;
-    --auth-submit-min-height: 2.75rem;
-    --auth-divider-margin-block-start: 1.5rem;
-    --auth-divider-margin-block-end: 1rem;
+    --app-card-padding-block: 1.25rem;
+    --app-card-padding-inline: 1.75rem;
+    --app-card-padding-block-end: 1.5rem;
+    --app-control-padding-block: 0.625rem;
+    --app-control-padding-inline: 0.875rem;
+    --app-control-min-height: 1.25rem;
+    --app-password-toggle-offset: 0.875rem;
+    --app-password-control-padding-inline-end: 2.75rem;
+    --app-submit-min-height: 2.75rem;
+    --app-divider-margin-block-start: 1.5rem;
+    --app-divider-margin-block-end: 1rem;
   }
 }
 

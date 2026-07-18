@@ -1,6 +1,6 @@
 .app-footer {
     background: transparent;
-    border-color: var(--auth-border) !important;
+    border-color: var(--app-border) !important;
     margin: 0.5rem;
 }
 

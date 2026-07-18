@@ -1,7 +1,7 @@
 .app-topbar {
     background: transparent;
     border-bottom: 1px solid var(--bs-border-color);
-    border-color: var(--auth-border);
+    border-color: var(--app-border);
     margin: 0.5rem;
 }
 
