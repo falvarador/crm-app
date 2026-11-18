@@ -20,6 +20,8 @@
     --color-on-surface-variant: light-dark(oklch(0.40 0.025 272), oklch(0.76 0.02 268));
     --color-outline: light-dark(oklch(0.57 0.025 272), oklch(0.64 0.025 270));
     --color-outline-variant: light-dark(oklch(0.83 0.02 272), oklch(0.34 0.025 265));
+    --color-border: light-dark(oklch(0.925 0.018 268), oklch(0.28 0.025 265));
+    --color-border-subtle: light-dark(oklch(0.955 0.012 270), oklch(0.24 0.02 265));
 
     /* Brand Primary (Deep Indigo) */
     --color-primary: light-dark(oklch(0.44 0.19 264), oklch(0.68 0.17 265));
