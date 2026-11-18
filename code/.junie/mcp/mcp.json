@@ -1,0 +1,11 @@
+{
+    "mcpServers": {
+        "laravel-boost": {
+            "command": "/Users/falvarador/Library/Application Support/Herd/bin/php85",
+            "args": [
+                "/Users/falvarador/Development/Projects/crm-app/code/crm/artisan",
+                "boost:mcp"
+            ]
+        }
+    }
+}

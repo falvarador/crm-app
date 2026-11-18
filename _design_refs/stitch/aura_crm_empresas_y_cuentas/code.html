@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+
+<html lang="es"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface": "#faf8ff", "on-secondary-fixed": "#0b1c30", "primary": "#1a40c2", "on-tertiary-container": "#76ffc2", "on-tertiary": "#ffffff", "inverse-on-surface": "#eef0ff", "surface-container-highest": "#dae2fd", "tertiary-fixed": "#6ffbbe", "on-tertiary-fixed-variant": "#005236", "secondary-container": "#d0e1fb", "surface-container-high": "#e2e7ff", "on-tertiary-fixed": "#002113", "on-error": "#ffffff", "error-container": "#ffdad6", "on-primary-fixed-variant": "#0736ba", "error": "#ba1a1a", "surface-tint": "#3052d2", "tertiary-container": "#007650", "secondary-fixed-dim": "#b7c8e1", "inverse-primary": "#b8c3ff", "on-primary-container": "#e2e5ff", "outline": "#747686", "tertiary": "#005b3d", "secondary-fixed": "#d3e4fe", "on-primary-fixed": "#001355", "surface-dim": "#d2d9f4", "background": "#faf8ff", "on-error-container": "#93000a", "primary-fixed-dim": "#b8c3ff", "surface-bright": "#faf8ff", "on-secondary-container": "#54647a", "primary-container": "#3b5bdb", "surface-container-low": "#f2f3ff", "on-primary": "#ffffff", "on-background": "#131b2e", "tertiary-fixed-dim": "#4edea3", "on-secondary": "#ffffff", "on-surface": "#131b2e", "surface-variant": "#dae2fd", "surface-container-lowest": "#ffffff", "surface-container": "#eaedff", "inverse-surface": "#283044", "primary-fixed": "#dde1ff", "on-secondary-fixed-variant": "#38485d", "outline-variant": "#c4c5d6", "secondary": "#505f76", "on-surface-variant": "#444654" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-xl": "1.5rem", "gutter": "1rem", "space-lg": "1rem", "gutter-desktop": "1.5rem", "space-xs": "0.25rem", "space-sm": "0.5rem", "space-md": "0.75rem", "margin": "1rem", "margin-desktop": "2rem" }, "fontFamily": { "numeric-metric": [ "Inter" ], "label-md": [ "Inter" ], "title-md": [ "Inter" ], "numeric-table": [ "Inter" ], "headline-lg-mobile": [ "Plus Jakarta Sans" ], "headline-sm": [ "Plus Jakarta Sans" ], "body-lg": [ "Inter" ], "label-sm": [ "Inter" ], "headline-lg": [ "Plus Jakarta Sans" ], "body-sm": [ "Inter" ], "body-md": [ "Inter" ], "headline-md": [ "Plus Jakarta Sans" ] }, "fontSize": { "numeric-metric": [ "20px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "600" } ], "label-md": [ "12px", { "lineHeight": "16px", "fontWeight": "500" } ], "title-md": [ "15px", { "lineHeight": "20px", "letterSpacing": "-0.005em", "fontWeight": "600" } ], "numeric-table": [ "13px", { "lineHeight": "18px", "fontWeight": "500" } ], "headline-lg-mobile": [ "26px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "600" } ], "headline-sm": [ "18px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600" } ], "body-lg": [ "15px", { "lineHeight": "22px", "fontWeight": "400" } ], "label-sm": [ "11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" } ], "headline-lg": [ "32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" } ], "body-sm": [ "12px", { "lineHeight": "16px", "fontWeight": "400" } ], "body-md": [ "13px", { "lineHeight": "18px", "fontWeight": "400" } ], "headline-md": [ "22px", { "lineHeight": "28px", "letterSpacing": "-0.015em", "fontWeight": "600" } ] } } } };</script></head><body class="bg-surface font-body-md text-on-surface antialiased selection:bg-secondary-container selection:text-on-secondary-fixed"><aside class="fixed left-0 top-0 h-full w-[240px] bg-surface-container-lowest z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex flex-col"><div class="h-[60px] px-space-md flex items-center justify-between"><button class="flex items-center gap-space-sm w-full p-space-xs rounded-lg hover:bg-surface-container-low transition-colors" type="button"><img alt="Aura CRM Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrDqbf34N3RUXgqUEr8CSmT648oabC3C2OAZrawJtdN34FqaA8PBoZAWM_orlW5XrfV1T4RDKXJdxYxWk5799gnQ-Ev03eBSUR-zGaQsy0eswaUAr68CHHVLDlvOshCieu5ZDn37yXtqA5qiQJHTqSpw85zsR6VWp2kV-NuvZVz0HZYo5TabciDyqc1LHds3GgqoamrAPpCUFNLkoCvQyflHWdC5uPYn0e_lWINk9Lrfyw"/><div class="flex flex-col text-left"><span class="font-title-md text-title-md text-on-surface leading-tight tracking-tight">Aura Workspace</span><span class="font-label-sm text-label-sm text-on-surface-variant">aura.attio.io</span></div><span class="material-symbols-outlined text-outline ml-auto text-[18px]">unfold_more</span></button></div><div class="px-space-md py-space-sm"><button class="w-full flex items-center justify-center gap-space-xs py-space-xs px-space-sm rounded-lg bg-surface-container-low hover:bg-surface-container text-primary font-label-md text-label-md transition-all shadow-[0_1px_2px_rgba(0,0,0,0.02)]" type="button"><span class="material-symbols-outlined text-[16px]">add</span><span>Nueva Acción</span><span class="ml-auto font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-highest text-primary font-mono">C</span></button></div><div class="px-space-md pt-space-xs pb-space-xs"><span class="font-label-sm text-label-sm text-outline uppercase tracking-wider px-space-xs">Espacios</span></div><nav class="flex flex-col gap-0.5 px-space-md" data-active-classes="bg-primary-container text-on-primary-container font-medium"><a class="flex items-center gap-space-md px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all font-body-md text-body-md" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[18px]">grid_view</span><span>Dashboard</span></a><a aria-current="page" class="flex items-center gap-space-md px-space-sm py-2 rounded-lg transition-all bg-primary-container text-on-primary-container font-medium" data-path="empresas" href="#"><span class="material-symbols-outlined text-[18px]">domain</span><span>Empresas</span></a><a class="flex items-center gap-space-md px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all font-body-md text-body-md" data-path="contactos" href="#"><span class="material-symbols-outlined text-[18px]">contacts</span><span>Contactos</span></a><a class="flex items-center gap-space-md px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all font-body-md text-body-md" data-path="oportunidades" href="#"><span class="material-symbols-outlined text-[18px]">view_kanban</span><span>Oportunidades</span></a><a class="flex items-center gap-space-md px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all font-body-md text-body-md" data-path="actividades" href="#"><span class="material-symbols-outlined text-[18px]">check_circle</span><span>Actividades</span></a></nav></div><div class="p-space-md flex flex-col gap-space-sm"><div class="flex items-center justify-between px-space-xs py-1"><div class="flex items-center gap-1.5 p-1 bg-surface-container-low rounded-full"><button class="flex items-center justify-center w-6 h-6 rounded-full bg-surface-container-lowest shadow-[0_1px_2px_rgba(0,0,0,0.05)] text-on-surface" type="button"><span class="material-symbols-outlined text-[14px]">light_mode</span></button><button class="flex items-center justify-center w-6 h-6 rounded-full text-outline hover:text-on-surface" type="button"><span class="material-symbols-outlined text-[14px]">dark_mode</span></button></div><a class="p-1 text-outline hover:text-on-surface rounded-lg hover:bg-surface-container-low transition-colors" href="#"><span class="material-symbols-outlined text-[18px]">settings</span></a></div><div class="flex items-center justify-between p-space-xs rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer"><div class="flex items-center gap-space-sm"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBf7GghSazbr0O9dgpoioIPyNgH9OIdGbA7mIYIKnEROF0IDHAy24__f6eTIDytsxW7NF-7uwpPUjZeswtm-L0OItwkptsKcOZrflkm7lIQp0aqY9yQ9GDLE1YZwVmcu242yTIRg0OB2mUV5pDt9XAMK9YEEzPcADAjndsG6tWzae-L2cWjdUdHvDzjmTyv4Dl3qDzLf1x_2MyuZ8276Wp4SKEhikLz1NQA6dXLzqnl"/><div class="flex flex-col"><span class="font-label-md text-label-md text-on-surface font-semibold leading-tight">Sofía Méndez</span><span class="font-label-sm text-label-sm text-on-surface-variant leading-tight">Admin / Ventas</span></div></div><span class="material-symbols-outlined text-outline text-[18px]">more_vert</span></div></div></aside><div class="pl-[240px]"><header class="fixed top-0 left-[240px] right-0 h-[60px] bg-surface-container-lowest/90 backdrop-blur-xl z-40 flex items-center justify-between px-space-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex items-center gap-space-xs text-on-surface-variant font-label-md text-label-md"><span class="hover:text-on-surface transition-colors cursor-pointer">Aura CRM</span><span class="text-outline text-label-sm">/</span><span class="text-on-surface font-medium">Espacio de Trabajo</span></div><div class="flex items-center gap-space-md"><button class="flex items-center gap-space-md py-1.5 px-space-md rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-all shadow-[0_1px_2px_rgba(0,0,0,0.02)]" type="button"><span class="material-symbols-outlined text-[16px] text-outline">search</span><span class="font-body-sm text-body-sm text-on-surface-variant">Buscar contactos, empresas...</span><kbd class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-highest text-secondary font-mono text-[10px]">⌘K</kbd></button><div class="flex items-center gap-1"><button class="relative p-2 rounded-lg text-outline hover:text-on-surface hover:bg-surface-container-low transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-primary"></span></button><button class="p-2 rounded-lg text-outline hover:text-on-surface hover:bg-surface-container-low transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">help</span></button></div></div></header><main class="relative pt-[60px] bg-surface min-h-screen w-full px-gutter-desktop"><div class="flex flex-col w-full pb-space-xl">
+<!-- Top Section: Header & Operational Controls -->
+<div class="flex flex-col gap-space-md mb-space-lg pt-space-xs">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<div class="flex items-baseline gap-space-md">
+<h1 class="font-headline-sm text-headline-sm text-on-surface tracking-tight">Empresas y Cuentas Comerciales</h1>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-surface-container-high text-primary font-label-md text-label-md tabular-nums font-semibold">128 Empresas activas</span>
+</div>
+<!-- View Switcher & Action Controls -->
+<div class="flex items-center gap-space-sm self-start lg:self-auto">
+<div class="inline-flex p-1 bg-surface-container rounded-lg shadow-sm">
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-on-surface-variant hover:text-on-surface transition-colors font-label-md text-label-md" type="button">
+<span class="material-symbols-outlined text-[16px]">table_rows</span>
+<span>Tabla</span>
+</button>
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-surface-container-lowest text-primary shadow-sm font-label-md text-label-md font-semibold" type="button">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">splitscreen</span>
+<span>Vista Dividida</span>
+</button>
+</div>
+<button class="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-surface-container-lowest hover:bg-surface-container-low text-on-surface transition-all shadow-sm font-label-md text-label-md font-medium" type="button">
+<span class="material-symbols-outlined text-[16px]">file_download</span>
+<span>Exportar</span>
+</button>
+<button class="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-primary hover:bg-primary-container text-on-primary transition-all shadow-sm font-label-md text-label-md font-semibold" type="button">
+<span class="material-symbols-outlined text-[16px]">add_business</span>
+<span>Crear Empresa</span>
+</button>
+</div>
+</div>
+<!-- Quick Filters Bar -->
+<div class="flex flex-wrap items-center gap-space-sm p-space-sm rounded-xl bg-surface-container-lowest shadow-sm">
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-low text-on-surface-variant text-label-md font-label-md">
+<span class="material-symbols-outlined text-[16px] text-outline">filter_list</span>
+<span class="font-medium text-on-surface">Filtros:</span>
+</div>
+<!-- Sector Selector Dropdown Replica -->
+<div class="relative">
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md transition-colors" type="button">
+<span class="text-on-surface-variant">Sector:</span>
+<span class="font-semibold text-primary">SaaS, FinTech</span>
+<span class="material-symbols-outlined text-[14px] text-outline">expand_more</span>
+</button>
+</div>
+<!-- Estado Filter -->
+<div class="relative">
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md transition-colors" type="button">
+<span class="text-on-surface-variant">Estado:</span>
+<span class="font-semibold text-on-surface">Activa</span>
+<span class="material-symbols-outlined text-[14px] text-outline">expand_more</span>
+</button>
+</div>
+<!-- Responsable Filter -->
+<div class="relative">
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md transition-colors" type="button">
+<span class="text-on-surface-variant">Responsable:</span>
+<span class="font-semibold text-on-surface">Sofía Méndez</span>
+<span class="material-symbols-outlined text-[14px] text-outline">expand_more</span>
+</button>
+</div>
+<div class="h-4 w-px bg-surface-container-highest mx-1"></div>
+<!-- Clear/Total indicator -->
+<span class="text-label-sm font-label-sm text-outline px-1">Mostrando 1 de 128 cuentas filtradas</span>
+<div class="ml-auto flex items-center gap-1">
+<button class="p-1 rounded-md text-outline hover:text-on-surface hover:bg-surface-container-low transition-colors" title="Limpiar filtros" type="button">
+<span class="material-symbols-outlined text-[18px]">restart_alt</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Master-Detail Split Workspace Canvas -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- LEFT PANEL: Master Summary & Metadata (approx 40% = 5 cols) -->
+<div class="lg:col-span-5 flex flex-col gap-space-md">
+<!-- Company Brand Identity Card -->
+<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col gap-space-md relative overflow-hidden">
+<div class="absolute -right-12 -top-12 w-36 h-36 rounded-full bg-primary/5 blur-2xl pointer-events-none"></div>
+<div class="flex items-start justify-between gap-space-sm relative z-10">
+<div class="flex items-center gap-space-md">
+<div class="w-14 h-14 rounded-xl bg-surface-container-high flex items-center justify-center p-2.5 shadow-sm">
+<!-- Geometric modern tech monogram -->
+<svg class="w-full h-full text-primary" fill="none" viewbox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+<rect fill="currentColor" fill-opacity="0.1" height="36" rx="8" width="36"></rect>
+<path d="M10 26V10L18 20L26 10V26" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.75"></path>
+<circle cx="26" cy="10" fill="currentColor" r="2"></circle>
+</svg>
+</div>
+<div class="flex flex-col min-w-0">
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate leading-snug">NovaTech Solutions S.A.</h2>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="font-numeric-table text-numeric-table text-outline font-mono">B-87654321</span>
+<span class="text-outline text-label-sm">•</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">Cuenta Clave</span>
+</div>
+</div>
+</div>
+<!-- Status badge: Activa - Tier 1 -->
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-tertiary-fixed text-on-tertiary-fixed-variant font-label-sm text-label-sm font-semibold shrink-0">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span>Activa - Tier 1</span>
+</span>
+</div>
+<!-- Metadata Attributes Grid -->
+<div class="grid grid-cols-2 gap-space-sm p-space-sm rounded-lg bg-surface-container-low text-on-surface">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Industria</span>
+<span class="font-body-md text-body-md font-medium text-on-surface mt-0.5 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary">cloud</span>
+              SaaS B2B Cloud
+            </span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Ubicación</span>
+<span class="font-body-md text-body-md font-medium text-on-surface mt-0.5 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-outline">location_on</span>
+              Madrid, España
+            </span>
+</div>
+<div class="flex flex-col mt-1">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Sitio Web</span>
+<a class="font-body-md text-body-md font-medium text-primary hover:underline mt-0.5 flex items-center gap-1 truncate" href="#">
+<span class="material-symbols-outlined text-[14px]">link</span>
+              novatech-solutions.io
+            </a>
+</div>
+<div class="flex flex-col mt-1">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Teléfono Directo</span>
+<span class="font-body-md text-body-md font-medium text-on-surface mt-0.5 font-numeric-table tabular-nums flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-outline">call</span>
+              +34 910 234 567
+            </span>
+</div>
+</div>
+<!-- Action Quick-Bar -->
+<div class="flex items-center gap-2 pt-1">
+<button class="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-primary hover:bg-primary-container text-on-primary transition-all shadow-sm font-label-md text-label-md font-semibold" type="button">
+<span class="material-symbols-outlined text-[16px]">add_circle</span>
+<span>+ Nueva Oportunidad</span>
+</button>
+<button class="flex items-center justify-center gap-1 py-2 px-3 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface transition-colors font-label-md text-label-md font-medium" type="button">
+<span class="material-symbols-outlined text-[16px] text-outline">playlist_add</span>
+<span>Actividad</span>
+</button>
+<button class="p-2 rounded-lg bg-surface-container-low hover:bg-surface-container text-outline hover:text-on-surface transition-colors" title="Editar Cuenta" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+</div>
+</div>
+<!-- Key Financials & Metric Bento -->
+<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<span class="font-title-md text-title-md text-on-surface font-semibold">Métricas Financieras de Cuenta</span>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded bg-surface-container text-secondary font-mono">Q3 • 2024</span>
+</div>
+<div class="grid grid-cols-2 gap-space-sm">
+<div class="p-3 rounded-lg bg-surface-container-low flex flex-col">
+<span class="font-label-sm text-label-sm text-outline">Valor Total en Deals</span>
+<div class="flex items-baseline gap-1 mt-1">
+<span class="font-headline-sm text-headline-sm text-on-surface font-numeric-metric tabular-nums font-bold">$86,500</span>
+<span class="font-label-sm text-label-sm text-tertiary font-semibold flex items-center">
+<span class="material-symbols-outlined text-[12px]">trending_up</span>+18%
+              </span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">2 oportunidades abiertas</span>
+</div>
+<div class="p-3 rounded-lg bg-surface-container-low flex flex-col">
+<span class="font-label-sm text-label-sm text-outline">MRR Recurrente Actual</span>
+<div class="flex items-baseline gap-1 mt-1">
+<span class="font-headline-sm text-headline-sm text-on-surface font-numeric-metric tabular-nums font-bold">$4,200</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">/mes</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Suscripción Enterprise L3</span>
+</div>
+</div>
+<!-- Inline Deal Pipeline Breakdown Micro-Bar -->
+<div class="flex flex-col gap-1.5 pt-1">
+<div class="flex justify-between items-center text-label-sm font-label-sm">
+<span class="text-on-surface-variant">Progreso del Pipeline Activo</span>
+<span class="font-semibold text-primary">70% probabilidad ponderada</span>
+</div>
+<div class="h-2 w-full rounded-full bg-surface-container overflow-hidden flex">
+<div class="bg-primary h-full w-[65%]" title="Negociación Final ($42,000)"></div>
+<div class="bg-secondary-container h-full w-[25%]" title="Propuesta Técnica ($44,500)"></div>
+<div class="bg-surface-variant h-full w-[10%]" title="Otros"></div>
+</div>
+<div class="flex items-center gap-3 text-label-sm font-label-sm text-outline mt-1">
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-primary"></span> Negociación</span>
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-secondary-container"></span> Propuesta</span>
+<span class="ml-auto font-mono text-on-surface">Total: $86.5k</span>
+</div>
+</div>
+</div>
+<!-- Associated Contacts Mini-List -->
+<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col gap-space-sm">
+<div class="flex items-center justify-between pb-1">
+<div class="flex items-center gap-2">
+<span class="font-title-md text-title-md text-on-surface font-semibold">Contactos Vinculados</span>
+<span class="w-5 h-5 rounded-full bg-surface-container-high text-primary flex items-center justify-center font-label-sm text-label-sm font-bold">4</span>
+</div>
+<button class="text-primary hover:text-primary-container font-label-md text-label-md font-semibold flex items-center gap-1" type="button">
+<span>+ Asociar</span>
+</button>
+</div>
+<div class="flex flex-col divide-y divide-transparent gap-2">
+<!-- Contact 1 -->
+<div class="flex items-center justify-between p-2 rounded-lg hover:bg-surface-container-low transition-colors group">
+<div class="flex items-center gap-2.5 min-w-0">
+<img class="w-9 h-9 rounded-full object-cover shrink-0" data-alt="Corporate headshot portrait of Elena Sanz, Director of Operations at modern SaaS enterprise, neutral studio lighting, confident professional demeanor, 8k" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVQE5WpdH9osRPKPRINliBwE8FBYxmn5agbtlPv0TtCUH8yrUOze45xxIVHw3VjmmxOor8CuH6olsAmZs62XeUS4ieugnWZCysACUTX9mBaP6VfDT3FnV3guEVEdHMe3N0-TsbehzOsx4ePPL04N1pjBMyVfgmhY4QcZkWyfqYODykdjVOMR3PWZ3L-k5akRkhDB2d5kCqMthM2mEEM8wIyQSJ1zz-DlEDbjOCEirZ"/>
+<div class="flex flex-col min-w-0">
+<span class="font-title-md text-[13px] text-on-surface font-semibold truncate leading-tight group-hover:text-primary transition-colors">Elena Sanz</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Directora de Operaciones (COO)</span>
+</div>
+</div>
+<div class="flex items-center gap-1 shrink-0">
+<span class="px-2 py-0.5 rounded bg-tertiary-fixed/60 text-on-tertiary-fixed-variant text-[10px] font-bold">Decisor</span>
+<a class="p-1.5 rounded-lg text-outline hover:text-primary hover:bg-surface-container transition-colors" href="mailto:elena.sanz@novatech-solutions.io" title="Enviar correo">
+<span class="material-symbols-outlined text-[16px]">mail</span>
+</a>
+</div>
+</div>
+<!-- Contact 2 -->
+<div class="flex items-center justify-between p-2 rounded-lg hover:bg-surface-container-low transition-colors group">
+<div class="flex items-center gap-2.5 min-w-0">
+<img class="w-9 h-9 rounded-full object-cover shrink-0" data-alt="Portrait of Carlos Morales, Senior VP Technology with glasses, minimalist tech office background, soft daylight, professional attire" src="https://lh3.googleusercontent.com/aida-public/AB6AXuALINN4xlko_vyW2uYT9-_q9Lh3csj2p1TW_GxyLHMWK2omkg3Yq3qFkdcMprMeDHsOqBaA8Ah0OW4RyVVZ2DOjMCbJdSyEQFaYMozL1WMeGtzZBTLeELta-V-goFVBE4DZygcxli-diLEYfhVQyMMBiwQeOtJWeWifIAm--m-XZup_bwa8wl2OgVw5hitP2AxAdtMTMEGuS9lhkpQmWiyyjQaZQW5smN7Ad235MGTH"/>
+<div class="flex flex-col min-w-0">
+<span class="font-title-md text-[13px] text-on-surface font-semibold truncate leading-tight group-hover:text-primary transition-colors">Carlos Morales</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">VP de Infraestructura Cloud</span>
+</div>
+</div>
+<div class="flex items-center gap-1 shrink-0">
+<span class="px-2 py-0.5 rounded bg-secondary-container text-on-secondary-container text-[10px] font-bold">Técnico</span>
+<a class="p-1.5 rounded-lg text-outline hover:text-primary hover:bg-surface-container transition-colors" href="mailto:carlos.morales@novatech-solutions.io" title="Enviar correo">
+<span class="material-symbols-outlined text-[16px]">mail</span>
+</a>
+</div>
+</div>
+<!-- Contact 3 -->
+<div class="flex items-center justify-between p-2 rounded-lg hover:bg-surface-container-low transition-colors group">
+<div class="flex items-center gap-2.5 min-w-0">
+<img class="w-9 h-9 rounded-full object-cover shrink-0" data-alt="Portrait photograph of Laura Gallego, Head of Procurement and Security Audits, bright modern Spanish office atmosphere, smiling warmly" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD21A3iISggV1UYiYInVZ6dLbGMTweNWKUCzCl8YLpkOPwSvg1FLTsAoJz2ONHYFpZqN56vaiGo1qcoMrPZW7kAG0W_q38AceCeLCKz9szj0vzi-rokxDZDmT6SoeZ_k_YeRETqcmOabEIgOGM1n3C4uVeOnDNN5JlJoW_3Or5QS6xKabI2K4Y32rX-o1Thh2SOvlJ6nxO-H-nqfV3GtVwbxEnegt6WoXkkEst5UBBe"/>
+<div class="flex flex-col min-w-0">
+<span class="font-title-md text-[13px] text-on-surface font-semibold truncate leading-tight group-hover:text-primary transition-colors">Laura Gallego</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Responsable de Compras &amp; Legal</span>
+</div>
+</div>
+<div class="flex items-center gap-1 shrink-0">
+<a class="p-1.5 rounded-lg text-outline hover:text-primary hover:bg-surface-container transition-colors" href="mailto:laura.gallego@novatech-solutions.io" title="Enviar correo">
+<span class="material-symbols-outlined text-[16px]">mail</span>
+</a>
+</div>
+</div>
+</div>
+<button class="w-full text-center py-1.5 font-label-sm text-label-sm text-outline hover:text-on-surface transition-colors" type="button">
+          Ver los 4 contactos vinculados →
+        </button>
+</div>
+</div>
+<!-- RIGHT PANEL: Operational Workspace, Tabs & Activity Stream (approx 60% = 7 cols) -->
+<div class="lg:col-span-7 flex flex-col gap-space-md">
+<!-- Navigation Tabs Bar -->
+<div class="rounded-xl bg-surface-container-lowest shadow-sm px-space-md pt-2 flex items-center justify-between">
+<nav class="flex items-center gap-space-lg overflow-x-auto">
+<button class="pb-3 border-b-2 border-primary text-primary font-title-md text-title-md font-semibold flex items-center gap-1.5 shrink-0" type="button">
+<span class="material-symbols-outlined text-[18px]">dashboard</span>
+<span>Resumen</span>
+</button>
+<button class="pb-3 border-b-2 border-transparent hover:border-outline-variant text-on-surface-variant hover:text-on-surface font-title-md text-title-md font-medium flex items-center gap-1.5 shrink-0 transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">monetization_on</span>
+<span>Oportunidades</span>
+<span class="px-1.5 py-0.2 rounded-full bg-surface-container-high text-primary font-label-sm text-label-sm font-semibold">2</span>
+</button>
+<button class="pb-3 border-b-2 border-transparent hover:border-outline-variant text-on-surface-variant hover:text-on-surface font-title-md text-title-md font-medium flex items-center gap-1.5 shrink-0 transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">group</span>
+<span>Contactos</span>
+<span class="px-1.5 py-0.2 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">4</span>
+</button>
+<button class="pb-3 border-b-2 border-transparent hover:border-outline-variant text-on-surface-variant hover:text-on-surface font-title-md text-title-md font-medium flex items-center gap-1.5 shrink-0 transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">history</span>
+<span>Historial</span>
+</button>
+<button class="pb-3 border-b-2 border-transparent hover:border-outline-variant text-on-surface-variant hover:text-on-surface font-title-md text-title-md font-medium flex items-center gap-1.5 shrink-0 transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">folder_open</span>
+<span>Documentos</span>
+</button>
+</nav>
+<button class="p-1.5 mb-2 rounded-lg text-outline hover:text-on-surface hover:bg-surface-container-low transition-colors" title="Personalizar pestañas" type="button">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+</button>
+</div>
+<!-- Quick Note / Activity Composer -->
+<div class="rounded-xl bg-surface-container-lowest p-space-md shadow-sm flex flex-col gap-space-sm focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+<div class="flex items-center gap-2 text-on-surface-variant text-label-md font-label-md">
+<span class="material-symbols-outlined text-[16px] text-primary">edit_note</span>
+<span class="font-semibold text-on-surface">Registrar Interacción o Nota Interna</span>
+<span class="text-outline text-label-sm ml-auto">Visible para todo el equipo comercial</span>
+</div>
+<div class="relative">
+<textarea class="w-full p-space-sm rounded-lg bg-surface-container-low text-on-surface placeholder:text-outline text-body-md font-body-md focus:outline-none resize-none transition-colors" placeholder="Escribe una nota rápida o registra un acuerdo con NovaTech... (usa @ para mencionar contactos)" rows="3"></textarea>
+</div>
+<!-- Composer Toolbar & Primary Action -->
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-1 text-outline">
+<button class="p-1.5 rounded hover:bg-surface-container hover:text-on-surface transition-colors" title="Adjuntar archivo" type="button">
+<span class="material-symbols-outlined text-[16px]">attach_file</span>
+</button>
+<button class="p-1.5 rounded hover:bg-surface-container hover:text-on-surface transition-colors" title="Mencionar" type="button">
+<span class="material-symbols-outlined text-[16px]">alternate_email</span>
+</button>
+<button class="p-1.5 rounded hover:bg-surface-container hover:text-on-surface transition-colors" title="Vincular oportunidad" type="button">
+<span class="material-symbols-outlined text-[16px]">view_kanban</span>
+</button>
+<div class="h-3 w-px bg-surface-container-highest mx-1"></div>
+<span class="text-label-sm font-label-sm">Tipo: <strong>Llamada</strong></span>
+</div>
+<button class="px-4 py-1.5 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md font-semibold transition-all shadow-sm" type="button">
+            Guardar Nota
+          </button>
+</div>
+</div>
+<!-- Activity Timeline Header & Feed -->
+<div class="rounded-xl bg-surface-container-lowest p-space-lg shadow-sm flex flex-col gap-space-lg">
+<div class="flex items-center justify-between pb-space-xs">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-primary">dynamic_feed</span>
+<span class="font-title-md text-title-md text-on-surface font-semibold">Cronograma de Actividades Recientes</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-label-sm font-label-sm text-outline">Filtrar por:</span>
+<select class="bg-surface-container-low text-on-surface font-label-sm text-label-sm px-2 py-1 rounded-md border-0 focus:outline-none cursor-pointer">
+<option>Todo el historial</option>
+<option>Solo llamadas</option>
+<option>Cambios de deal</option>
+<option>Correos</option>
+</select>
+</div>
+</div>
+<!-- Flowing Timeline Stream -->
+<div class="relative pl-6 flex flex-col gap-space-lg">
+<!-- Timeline Vertical Spine -->
+<div class="absolute left-2.5 top-2 bottom-2 w-0.5 bg-surface-container-high"></div>
+<!-- Item 1: Llamada comercial completada -->
+<div class="relative flex items-start gap-space-md group">
+<div class="absolute -left-6 top-0.5 w-6 h-6 rounded-full bg-surface-container-lowest flex items-center justify-center">
+<div class="w-5 h-5 rounded-full bg-secondary-container text-on-secondary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-[12px]">call</span>
+</div>
+</div>
+<div class="flex-1 flex flex-col p-space-md rounded-xl bg-surface-container-low hover:bg-surface-container transition-all">
+<div class="flex items-center justify-between gap-space-sm flex-wrap">
+<div class="flex items-center gap-2">
+<span class="font-title-md text-[14px] text-on-surface font-semibold">Llamada comercial completada</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant text-label-sm font-label-sm font-medium">Duración: 25m</span>
+</div>
+<div class="flex items-center gap-1.5 text-outline text-label-sm font-label-sm">
+<span class="font-medium text-on-surface">Sofía Méndez</span>
+<span>•</span>
+<span class="font-mono">Hoy, 10:15 CET</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2 leading-relaxed">
+                Acuerdo sobre términos de seguridad ISO 27001 para la propuesta final. Se acordó remitir el anexo de protección de datos (RGPD/DPA) actualizado antes del cierre de semana.
+              </p>
+<div class="flex items-center gap-2 mt-3 pt-2 text-label-sm font-label-sm text-outline">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-tertiary">check_circle</span> Resultado positivo</span>
+<span>•</span>
+<span>Interlocutor: Elena Sanz</span>
+</div>
+</div>
+</div>
+<!-- Item 2: Oportunidad avanzada -->
+<div class="relative flex items-start gap-space-md group">
+<div class="absolute -left-6 top-0.5 w-6 h-6 rounded-full bg-surface-container-lowest flex items-center justify-center">
+<div class="w-5 h-5 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[12px]">trending_up</span>
+</div>
+</div>
+<div class="flex-1 flex flex-col p-space-md rounded-xl bg-surface-container-low hover:bg-surface-container transition-all">
+<div class="flex items-center justify-between gap-space-sm flex-wrap">
+<div class="flex items-center gap-2">
+<span class="font-title-md text-[14px] text-on-surface font-semibold">Oportunidad avanzada en el Pipeline</span>
+<span class="px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed-variant font-numeric-table font-bold tabular-nums text-label-sm">$42,000</span>
+</div>
+<span class="text-outline text-label-sm font-label-sm font-mono">Ayer, 16:40 CET</span>
+</div>
+<div class="flex items-center gap-2 mt-2 font-body-md text-body-md">
+<span class="text-on-surface-variant font-medium">Trato:</span>
+<span class="text-on-surface font-semibold">Migración AWS Cloud &amp; Kubernetes</span>
+<span class="text-outline">→</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-highest text-primary font-semibold text-label-sm">
+                  Negociación Final
+                </span>
+</div>
+</div>
+</div>
+<!-- Item 3: Correo electrónico recibido -->
+<div class="relative flex items-start gap-space-md group">
+<div class="absolute -left-6 top-0.5 w-6 h-6 rounded-full bg-surface-container-lowest flex items-center justify-center">
+<div class="w-5 h-5 rounded-full bg-surface-container-highest text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[12px]">mail</span>
+</div>
+</div>
+<div class="flex-1 flex flex-col p-space-md rounded-xl bg-surface-container-low hover:bg-surface-container transition-all">
+<div class="flex items-center justify-between gap-space-sm flex-wrap">
+<div class="flex items-center gap-2">
+<span class="font-title-md text-[14px] text-on-surface font-semibold">Correo electrónico recibido</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant text-[11px] font-medium font-mono">Re: Arquitectura v2</span>
+</div>
+<span class="text-outline text-label-sm font-label-sm font-mono">24 Oct, 11:20 CET</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2 leading-relaxed">
+                De <strong class="text-on-surface">Elena Sanz</strong> (Directora de Operaciones): <em>"El equipo de DevOps ha revisado la propuesta de conectividad dedicada y ha dado visto bueno técnico. Pendiente solo validación jurídica de SLA de disponibilidad."</em>
+</p>
+<div class="flex items-center gap-2 mt-3 text-label-sm font-label-sm">
+<button class="text-primary hover:underline font-semibold flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[14px]">reply</span> Responder
+                </button>
+<span class="text-outline">•</span>
+<span class="text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">attach_file</span> 1 adjunto (diagrama-aws-slas.pdf)
+                </span>
+</div>
+</div>
+</div>
+<!-- Item 4: Reunión agendada -->
+<div class="relative flex items-start gap-space-md group">
+<div class="absolute -left-6 top-0.5 w-6 h-6 rounded-full bg-surface-container-lowest flex items-center justify-center">
+<div class="w-5 h-5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-[12px]">event</span>
+</div>
+</div>
+<div class="flex-1 flex flex-col p-space-md rounded-xl bg-surface-container-low hover:bg-surface-container transition-all">
+<div class="flex items-center justify-between gap-space-sm flex-wrap">
+<div class="flex items-center gap-2">
+<span class="font-title-md text-[14px] text-on-surface font-semibold">Reunión agendada: Demostración Ejecutiva</span>
+<span class="px-2 py-0.5 rounded-full bg-tertiary-container text-on-tertiary-container text-label-sm font-label-sm font-semibold">Confirmada</span>
+</div>
+<span class="text-outline text-label-sm font-label-sm font-mono">Martes próximo, 11:00</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">
+                Convocatoria con la Junta de Tecnología y Finanzas de NovaTech Solutions. Enlace de Google Meet generado y compartido con 6 participantes.
+              </p>
+<div class="flex items-center gap-2 mt-3 text-label-sm font-label-sm text-outline">
+<button class="px-2.5 py-1 rounded bg-surface-container-lowest text-on-surface hover:bg-surface-container font-medium transition-colors flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[14px] text-primary">videocam</span> Entrar a la Sala
+                </button>
+<button class="px-2.5 py-1 rounded text-outline hover:text-on-surface transition-colors" type="button">
+                  Reprogramar
+                </button>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-center pt-2">
+<button class="px-4 py-2 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface font-label-md text-label-md font-medium transition-colors flex items-center gap-2" type="button">
+<span>Cargar interacciones anteriores</span>
+<span class="material-symbols-outlined text-[16px]">expand_more</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div></main></div></body></html>
