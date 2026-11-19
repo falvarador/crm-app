@@ -1,65 +1,58 @@
-# Aura CRM
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-Plataforma ligera, rápida y moderna para la gestión de relaciones con clientes (CRM), construida sobre **Laravel** con una **arquitectura híbrida (SSR + Islas de Reactividad)** que elimina la sobrecarga de los frameworks SPA tradicionales.
+<p align="center">
+<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+</p>
 
----
+## About Laravel
 
-## Características Principales
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- **Gestión Integral de Clientes:** Control completo de cuentas comerciales (empresas), contactos, prospectos y conversión rápida a clientes activos.
-- **Pipeline Visual de Ventas:** Gestión de oportunidades por etapas con vista de lista y tablero Kanban interactivo.
-- **Seguimiento y Actividades:** Registro cronológico polimórfico de llamadas, correos, reuniones, tareas y notas vinculadas a cualquier entidad.
-- **Islas de Reactividad (Zero-Framework JS):** Modales, notificaciones toast, búsqueda en tiempo real y actualizaciones parciales del DOM sin recargar la página mediante **HTML Web Components (Light DOM)** nativos.
-- **Validación Sincronizada Cliente/Servidor:** Protección no intrusiva basada en la *Constraint Validation API* del navegador sincronizada con los `FormRequests` de Laravel.
-- **Diseño Moderno y Responsivo:** CSS 100% nativo sin preprocesadores ni frameworks de utilidades, con soporte automático para modo claro y oscuro.
+- [Simple, fast routing engine](https://laravel.com/docs/routing).
+- [Powerful dependency injection container](https://laravel.com/docs/container).
+- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+- [Robust background job processing](https://laravel.com/docs/queues).
+- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
----
+Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Stack Tecnológico y Arquitectura
+## Learning Laravel
 
-### Backend (Laravel Modular)
-- **Framework:** Laravel (PHP 8.3+)
-- **Base de Datos:** PostgreSQL / MySQL
-- **Arquitectura:** Organización modular por dominios (`app/Modules/`) con controladores híbridos delgados, `FormRequests`, `Actions` y `Policies`.
-- **Renderizado Parcial:** Motor **Blade** con componentes reutilizables (`<x-ui.*>`) y directivas `@fragment` para responder fragmentos HTML en peticiones asíncronas.
+Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-### Frontend (Estándares Web Nativos)
-- **Light DOM Web Components (Vanilla ES Modules):**
-  - `<crm-form-validate>`: Validación progresiva en `blur` e `input` con soporte para `[validate-msg]` y renderizado automático de errores `422` de Laravel en `[data-error-for]`.
-  - `<crm-form-ajax>`: Envío asíncrono de formularios mediante `fetch` con gestión de estado `aria-busy` y emisión de eventos personalizados (`event-keys`).
-  - `<crm-html-ajax>`: Escucha eventos del DOM y actualiza fragmentos HTML específicos (`X-Fragment-Request: true`) sin recargar la página.
-  - `<crm-dialog>` y `<crm-toast>`: Gestión accesible de `<dialog>` nativos y alertas flotantes.
-  - `<crm-kanban>`: Tablero Drag & Drop nativo sincronizado vía peticiones `PATCH`.
-- **CSS Nativo Moderno:**
-  - **Cascade Layers (`@layer`):** `reset`, `tokens`, `base`, `layout`, `components`, `utilities`.
-  - **Sistema de Color Perceptual:** Paleta definida en `oklch()` con manipulación relativa (`oklch(from ...)`) y soporte nativo claro/oscuro mediante `light-dark()`.
-  - **Selectores y Layouts Modernos:** CSS Nesting nativo (`&`), `:has()`, `:user-invalid`, Container Queries (`@container`), Subgrid, unidades lógicas y `@starting-style`.
+In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
----
+You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
 
-## Estructura del Proyecto
+## Agentic Development
 
-```text
-├── .agent/
-│   └── rules/                  # Reglas de arquitectura para Antigravity
-├── _design_refs/
-│   └── stitch/                 # Referencias HTML/CSS exportadas desde Google Stitch
-├── app/
-│   └── Modules/
-│       ├── Core/               # Autenticación, roles, layout base y UI compartida
-│       ├── Companies/          # Cuentas comerciales / Empresas
-│       ├── Contacts/           # Contactos y prospectos
-│       ├── Deals/              # Pipeline de ventas y Kanban
-│       ├── Activities/         # Tareas, notas y timeline polimórfico
-│       └── Dashboard/          # KPIs ejecutivos y resumen diario
-├── resources/
-│   ├── css/
-│   │   ├── app.css             # Punto de entrada y definición de @layer
-│   │   ├── tokens.css          # Design tokens (oklch, light-dark, tipografía, espaciado)
-│   │   ├── layout.css          # Estructura principal, sidebar y grids responsivos
-│   │   └── components.css      # Estilos de componentes con CSS Nesting y :has()
-│   ├── js/
-│   │   ├── app.js              # Registro de Web Components
-│   │   └── components/         # Light DOM Web Components (crm-*.js)
-│   └── views/
-│       └── components/ui/      # Componentes Blade semánticos (<x-ui.*>)
+Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+
+```bash
+composer require laravel/boost --dev
+
+php artisan boost:install
+```
+
+Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+
+## Contributing
+
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+
+## Code of Conduct
+
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+
+## Security Vulnerabilities
+
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+
+## License
+
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
