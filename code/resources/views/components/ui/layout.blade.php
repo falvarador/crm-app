@@ -94,20 +94,25 @@
                             <span class="material-symbols-outlined crm-icon crm-icon--xs" aria-hidden="true">dark_mode</span>
                         </button>
                     </div>
-                    <a href="{{ route('dashboard') }}" class="crm-btn crm-btn--ghost crm-btn--icon crm-sidebar__settings-link" aria-label="Configuración del espacio">
+                    <a href="{{ route('profile.edit') }}" class="crm-btn crm-btn--ghost crm-btn--icon crm-sidebar__settings-link" aria-label="Mi perfil">
                         <span class="material-symbols-outlined crm-icon crm-icon--md" aria-hidden="true">settings</span>
                     </a>
                 </div>
 
                 <div class="crm-sidebar__profile">
                     <div class="crm-sidebar__profile-info">
-                        <span class="crm-avatar" aria-hidden="true">SM</span>
+                        <span class="crm-avatar" aria-hidden="true">{{ mb_strtoupper(mb_substr(auth()->user()->name, 0, 1)) }}</span>
                         <div class="crm-sidebar__profile-meta">
-                            <span class="crm-sidebar__profile-name">Sofía Méndez</span>
-                            <span class="crm-sidebar__profile-role">Admin / Ventas</span>
+                            <span class="crm-sidebar__profile-name">{{ auth()->user()->name }}</span>
+                            <span class="crm-sidebar__profile-role">{{ auth()->user()->role === 'admin' ? 'Administrador' : 'Vendedor' }}</span>
                         </div>
                     </div>
-                    <span class="material-symbols-outlined crm-icon crm-icon--md crm-icon--muted crm-sidebar__profile-more" aria-hidden="true">more_vert</span>
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="crm-btn crm-btn--ghost crm-btn--icon crm-sidebar__profile-more" aria-label="Cerrar sesión" title="Cerrar sesión">
+                            <span class="material-symbols-outlined crm-icon crm-icon--md crm-icon--muted" aria-hidden="true">logout</span>
+                        </button>
+                    </form>
                 </div>
             </div>
         </aside>
@@ -192,13 +197,15 @@
                         <x-ui.form-field
                             name="company_name"
                             label="Empresa"
-                            placeholder="Ej. NovaTech Solutions"
+                            type="select"
+                            placeholder="Selecciona una empresa"
+                            :options="$crmCompanies"
                             required
                         />
                         <x-ui.form-field
                             name="schedule_label"
                             label="Horario programado"
-                            value="Hoy, 16:30"
+                            type="datetime-local"
                             required
                         />
                     </div>

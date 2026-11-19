@@ -23,7 +23,7 @@
                         <strong class="tabular-nums">{{ $totalPending }} Pendientes</strong>
                     </x-ui.badge>
                     <x-ui.badge variant="coral">
-                        <strong class="tabular-nums">{{ $overdueCount }} Prioritarias</strong>
+                        <strong class="tabular-nums">{{ $overdueCount }} Vencidas</strong>
                     </x-ui.badge>
                     <x-ui.badge variant="emerald" icon="check_circle">
                         <strong class="tabular-nums">{{ $totalCompleted }} Hechas</strong>
@@ -78,14 +78,16 @@
                                 name="company_name"
                                 label="Empresa vinculada"
                                 type="select"
-                                :options="collect($companies)->pluck('name', 'name')->toArray()"
+                                placeholder="Selecciona una empresa"
+                                :options="$crmCompanies"
                                 required
                             />
                             <x-ui.form-field
                                 name="contact_name"
-                                label="Contacto / Interlocutor"
-                                placeholder="Elena Sanz"
-                                value="Elena Sanz"
+                                label="Contacto de la empresa"
+                                type="select"
+                                placeholder="Sin contacto"
+                                :options="$crmContacts"
                             />
                         </div>
 
@@ -93,20 +95,16 @@
                             <x-ui.form-field
                                 name="schedule_label"
                                 label="Fecha y hora programada"
+                                type="datetime-local"
                                 icon="schedule"
-                                value="Hoy, 16:30"
                                 required
                             />
                             <x-ui.form-field
                                 name="owner"
                                 label="Responsable del seguimiento"
                                 type="select"
-                                value="Sofía Méndez"
-                                :options="[
-                                    'Sofía Méndez' => 'Sofía Méndez (Yo)',
-                                    'Carlos Vega' => 'Carlos Vega',
-                                    'Diego Cruz' => 'Diego Cruz',
-                                ]"
+                                :value="auth()->id()"
+                                :options="$crmUsers"
                             />
                         </div>
 
@@ -134,60 +132,24 @@
         </x-ui.card>
 
         <div class="crm-stack">
-            <x-ui.card>
+            <crm-html-ajax url="{{ route('activities.index') }}" fragment="activities-summary" listen-events="activities:updated">
+            @fragment('activities-summary')
+            <x-ui.card title="Resumen de Actividades">
                 <div class="crm-row crm-row--between">
-                    <span class="crm-meta-grid__label">Prospecto en foco</span>
-                    <x-ui.badge variant="sky">En Propuesta</x-ui.badge>
+                    <span class="crm-meta-grid__label">Pendientes</span>
+                    <strong class="crm-metric-inline">{{ $totalPending }}</strong>
                 </div>
-
-                <div class="crm-row crm-row--nowrap">
-                    <span class="crm-avatar crm-avatar--lg" aria-hidden="true">ES</span>
-                    <div class="crm-col">
-                        <strong>Elena Sanz</strong>
-                        <span class="crm-card__subtitle">COO en NovaTech Solutions S.A.</span>
-                    </div>
+                <div class="crm-row crm-row--between">
+                    <span class="crm-meta-grid__label">Vencidas</span>
+                    <strong class="crm-metric-inline">{{ $overdueCount }}</strong>
                 </div>
-
-                <div class="crm-meta-grid">
-                    <div class="crm-meta-grid__item">
-                        <span class="crm-meta-grid__label">Valor potencial</span>
-                        <strong class="crm-metric-inline">$47,000</strong>
-                    </div>
-                    <div class="crm-meta-grid__item">
-                        <span class="crm-meta-grid__label">Lead Score</span>
-                        <strong class="crm-metric-inline crm-icon--tertiary">94/100</strong>
-                    </div>
-                </div>
-
-                <div class="crm-col">
-                    <div class="crm-row crm-row--between">
-                        <span class="crm-card__subtitle">Cadencia de interacción</span>
-                        <strong class="crm-icon--primary">Óptima (4 días)</strong>
-                    </div>
-                    <div class="crm-progress">
-                        <div class="crm-progress__bar" style="inline-size: 80%;"></div>
-                    </div>
+                <div class="crm-row crm-row--between">
+                    <span class="crm-meta-grid__label">Completadas</span>
+                    <strong class="crm-metric-inline">{{ $totalCompleted }}</strong>
                 </div>
             </x-ui.card>
-
-            <x-ui.card title="Rendimiento Semanal" icon="trending_up">
-                <x-slot:headerActions>
-                    <span class="crm-card__subtitle tabular-nums">+14% vs sem. ant.</span>
-                </x-slot:headerActions>
-
-                <svg class="crm-sparkline crm-sparkline--wide" fill="none" viewBox="0 0 160 50" aria-hidden="true">
-                    <path d="M0 42 L25 35 L50 38 L75 20 L100 24 L125 10 L160 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    <circle cx="160" cy="6" r="3.5" fill="currentColor" />
-                </svg>
-
-                <x-slot:footer>
-                    <span>Lun</span>
-                    <span>Mar</span>
-                    <span>Mié</span>
-                    <strong class="crm-icon--primary">Jue</strong>
-                    <span>Vie</span>
-                </x-slot:footer>
-            </x-ui.card>
+            @endfragment
+            </crm-html-ajax>
         </div>
     </div>
 
@@ -211,7 +173,7 @@
                 data-fragment-nav="{{ route('activities.index', ['filter' => 'pending']) }}"
                 data-target-fragments="activities-feed"
             >
-                Mis Tareas Pendientes
+                Tareas Pendientes
             </button>
             <button
                 type="button"
@@ -317,7 +279,6 @@
                     @if(count($completedActivities) > 0)
                         <div class="crm-row crm-row--between crm-section-gap">
                             <span class="crm-page-header__eyebrow">Historial • Completadas con éxito</span>
-                            <x-ui.badge variant="emerald">100% Cumplimiento</x-ui.badge>
                         </div>
 
                         @foreach($completedActivities as $activity)

@@ -2,6 +2,7 @@
 
 namespace App\Modules\Companies\Http\Requests;
 
+use App\Modules\Core\Support\CrmAccess;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreCompanyRequest extends FormRequest
@@ -18,14 +19,14 @@ class StoreCompanyRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'min:2', 'max:120'],
-            'tax_id' => ['nullable', 'string', 'max:30'],
+            'tax_id' => ['nullable', 'string', 'max:30', 'unique:companies,tax_id'],
             'sector' => ['required', 'string', 'max:60'],
             'status' => ['required', 'string', 'max:40'],
             'location' => ['required', 'string', 'max:100'],
             'website' => ['nullable', 'string', 'max:120'],
             'phone' => ['nullable', 'string', 'max:40'],
-            'owner' => ['required', 'string', 'max:80'],
-            'mrr' => ['nullable', 'integer', 'min:0'],
+            'owner' => ['bail', 'required', 'integer', CrmAccess::ownerExists($this->user())],
+            'mrr' => ['nullable', 'numeric', 'min:0', 'max:9999999999.99', 'decimal:0,2'],
         ];
     }
 

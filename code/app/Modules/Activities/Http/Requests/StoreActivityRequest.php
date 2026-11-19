@@ -2,7 +2,9 @@
 
 namespace App\Modules\Activities\Http\Requests;
 
+use App\Modules\Core\Support\CrmAccess;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreActivityRequest extends FormRequest
 {
@@ -19,12 +21,17 @@ class StoreActivityRequest extends FormRequest
         return [
             'type' => ['required', 'in:llamada,correo,reunion,tarea,nota'],
             'subject' => ['required', 'string', 'min:3', 'max:160'],
-            'company_name' => ['required', 'string', 'max:120'],
-            'contact_name' => ['nullable', 'string', 'max:80'],
-            'owner' => ['nullable', 'string', 'max:80'],
-            'schedule_label' => ['required', 'string', 'max:60'],
+            'company_name' => ['bail', 'required', 'integer', CrmAccess::companyExists($this->user())],
+            'contact_name' => ['bail', 'nullable', 'integer', Rule::exists('contacts', 'id')->where(function ($query): void {
+                $query->where('company_id', $this->integer('company_name'))->whereNull('deleted_at');
+                if ($this->user()->role !== 'admin') {
+                    $query->where('owner_id', $this->user()->id);
+                }
+            })],
+            'owner' => ['bail', 'nullable', 'integer', CrmAccess::ownerExists($this->user())],
+            'schedule_label' => ['required_unless:type,nota', 'nullable', 'date_format:Y-m-d\TH:i'],
             'notes' => ['nullable', 'string', 'max:600'],
-            'completed' => ['nullable'],
+            'completed' => ['nullable', 'boolean'],
         ];
     }
 

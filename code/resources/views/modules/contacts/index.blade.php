@@ -11,7 +11,7 @@
                     @fragment('contacts-kpi')
                         <div class="crm-row">
                             <x-ui.badge variant="neutral" :dot="false">
-                                <span class="tabular-nums">{{ $totalContacts }} contactos activos</span>
+                                <span class="tabular-nums">{{ $totalContacts }} contactos</span>
                             </x-ui.badge>
                             <x-ui.badge variant="emerald">
                                 Calificados: <span class="tabular-nums">{{ $qualifiedCount }}</span>
@@ -74,9 +74,9 @@
                         <label for="contacts-owner-filter" class="sr-only">Ejecutivo asignado</label>
                         <select id="contacts-owner-filter" name="owner" class="crm-field__control crm-filter-select">
                             <option value="">Asignado: Todos</option>
-                            <option value="Sofía Méndez" @selected($filters['owner'] === 'Sofía Méndez')>Sofía Méndez</option>
-                            <option value="Carlos Vega" @selected($filters['owner'] === 'Carlos Vega')>Carlos Vega</option>
-                            <option value="Diego Cruz" @selected($filters['owner'] === 'Diego Cruz')>Diego Cruz</option>
+                            @foreach($crmUsers as $id => $name)
+                                <option value="{{ $id }}" @selected($filters['owner'] === (string) $id)>{{ $name }}</option>
+                            @endforeach
                         </select>
                     </div>
 
@@ -112,10 +112,12 @@
                                 </div>
                             </td>
                             <td>
-                                <a href="{{ route('companies.index') }}" class="crm-account-pill">
+                                @if($contact['company_name'])
+                                <a href="{{ route('companies.index', ['company_id' => $contact['company_id']]) }}" class="crm-account-pill">
                                     <span class="material-symbols-outlined crm-icon crm-icon--xs crm-icon--primary" aria-hidden="true">domain</span>
                                     <span>{{ $contact['company_name'] }}</span>
                                 </a>
+                                @endif
                             </td>
                             <td>
                                 <div class="crm-col">
@@ -131,7 +133,7 @@
                             </td>
                             <td class="is-actions">
                                 <div class="crm-row crm-row--end crm-row--nowrap">
-                                    <x-ui.button href="{{ route('deals.index') }}" variant="ghost" size="sm">Convertir a Deal</x-ui.button>
+                                    <x-ui.button href="{{ route('deals.index') }}" variant="ghost" size="sm">Ver oportunidades</x-ui.button>
                                 </div>
                             </td>
                         </tr>
@@ -211,7 +213,17 @@
                         name="company_name"
                         label="Empresa Asociada"
                         type="select"
+                        placeholder="Selecciona una empresa"
                         :options="$companyOptions"
+                        required
+                    />
+
+                    <x-ui.form-field
+                        name="owner"
+                        label="Responsable"
+                        type="select"
+                        :value="auth()->id()"
+                        :options="$crmUsers"
                         required
                     />
 

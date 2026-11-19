@@ -24,7 +24,7 @@ class DealController extends Controller
         $filteredDeals = array_values(array_filter(
             $state['deals'],
             static function (array $deal) use ($owner, $stageFilter): bool {
-                if ($owner !== '' && $deal['owner_name'] !== $owner) {
+                if ($owner !== '' && $deal['owner_id'] !== $owner) {
                     return false;
                 }
                 if ($stageFilter !== '' && $deal['stage'] !== $stageFilter) {
@@ -46,11 +46,13 @@ class DealController extends Controller
             $stageTotals[$key] = array_sum(array_column($stageDeals, 'amount'));
         }
 
-        $stats = $this->repository->computePipelineStats();
+        $weightedValue = collect($filteredDeals)
+            ->whereNotIn('stage', ['ganada', 'perdida'])
+            ->sum(fn (array $deal): float => $deal['amount'] * $deal['probability'] / 100);
 
         $companyOptions = [];
         foreach ($state['companies'] as $company) {
-            $companyOptions[$company['name']] = $company['name'];
+            $companyOptions[$company['id']] = $company['name'];
         }
 
         $view = view('modules.deals.index', [
@@ -58,7 +60,7 @@ class DealController extends Controller
             'dealsByStage' => $dealsByStage,
             'stageTotals' => $stageTotals,
             'stages' => $state['stages'],
-            'weightedValue' => $stats['weighted_value'],
+            'weightedValue' => $weightedValue,
             'totalDealsCount' => count($filteredDeals),
             'companyOptions' => $companyOptions,
             'filters' => [

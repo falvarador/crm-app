@@ -12,7 +12,21 @@ document.addEventListener('DOMContentLoaded', () => {
     initFragmentFilterButtons();
     initPipelineViewToggle();
     initActivityTypeSelector();
+    initCompanyOptions();
 });
+
+function initCompanyOptions() {
+    window.addEventListener('companies:updated', (event) => {
+        const company = event.detail?.company;
+        if (!company?.id || !company?.name) return;
+
+        document.querySelectorAll('select[name="company_name"]').forEach((select) => {
+            if (!Array.from(select.options).some((option) => option.value === String(company.id))) {
+                select.add(new Option(company.name, String(company.id)));
+            }
+        });
+    });
+}
 
 function initThemeToggle() {
     const root = document.documentElement;

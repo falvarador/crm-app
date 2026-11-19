@@ -197,7 +197,7 @@ class CrmKanban extends HTMLElement {
                     const amount = Number(card.getAttribute('data-amount') || 0);
                     return acc + (Number.isFinite(amount) ? amount : 0);
                 }, 0);
-                subtotalEl.textContent = `$${sum.toLocaleString('en-US')} USD`;
+                subtotalEl.textContent = `$${sum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD`;
             }
         });
     }

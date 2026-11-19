@@ -63,39 +63,25 @@
         @fragment('dashboard-kpis')
             <section class="crm-grid-kpis" aria-label="Indicadores clave de rendimiento">
                 <x-ui.stat-card
-                    label="Valor Pipeline Abierto"
-                    :value="'$' . number_format($openValue)"
+                    label="Pipeline abierto creado en el período"
+                    :value="'$' . number_format($openValue, 2)"
                     unit="USD"
                     icon="account_balance_wallet"
-                    badgeText="+12.4% vs mes anterior"
-                    badgeVariant="emerald"
-                >
-                    <x-slot:sparkline>
-                        <svg class="crm-sparkline" fill="none" viewBox="0 0 64 20" aria-hidden="true">
-                            <path d="M0 16 L12 14 L24 17 L36 10 L48 12 L64 3" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" />
-                        </svg>
-                    </x-slot:sparkline>
-                </x-ui.stat-card>
+                />
 
                 <x-ui.stat-card
-                    label="Tasa de Conversión"
+                    label="Conversión de oportunidades del período"
                     :value="$conversionRate . '%'"
                     unit="promedio"
                     icon="trending_up"
                     iconVariant="tertiary"
-                    badgeText="+3.1% tasa ganada"
-                    badgeVariant="emerald"
-                    metaText="Meta: 25%"
                 />
 
                 <x-ui.stat-card
-                    label="Contactos Activos"
+                    label="Contactos creados en el período"
                     :value="(string) $leadsCount"
                     unit="leads"
                     icon="group_add"
-                    badgeText="+18 esta semana"
-                    badgeVariant="sky"
-                    metaText="Inbound 72%"
                 />
 
                 <x-ui.stat-card
@@ -104,8 +90,6 @@
                     unit="agendadas"
                     icon="notification_important"
                     iconVariant="error"
-                    badgeText="2 prioritarias"
-                    badgeVariant="coral"
                     metaText="Resolver"
                     metaHref="#tareas-hoy"
                 />
@@ -144,7 +128,7 @@
                         </x-slot:headerActions>
 
                         <div class="crm-task-list">
-                            @foreach($tasks as $task)
+                            @forelse($tasks as $task)
                                 <div class="crm-task-item {{ $task['completed'] ? 'crm-task-item--done' : '' }}">
                                     <div class="crm-task-item__main">
                                         <crm-form-ajax event-keys="activities:updated,kpi:updated">
@@ -203,7 +187,9 @@
                                         <span class="material-symbols-outlined crm-icon crm-icon--tertiary" aria-label="Completada">done_all</span>
                                     @endif
                                 </div>
-                            @endforeach
+                            @empty
+                                <p class="crm-card__subtitle">No hay tareas programadas para hoy.</p>
+                            @endforelse
                         </div>
                     </x-ui.card>
                 @endfragment
@@ -223,7 +209,7 @@
                         </x-slot:headerActions>
 
                         <div class="crm-timeline">
-                            @foreach($recentFeed as $item)
+                            @forelse($recentFeed as $item)
                                 <div class="crm-timeline__item">
                                     <div class="crm-timeline__node crm-timeline__node--{{ $item['tone'] }}" aria-hidden="true">
                                         <span class="crm-timeline__node-dot"></span>
@@ -242,7 +228,9 @@
                                         @endif
                                     </div>
                                 </div>
-                            @endforeach
+                            @empty
+                                <p class="crm-card__subtitle">Todavía no hay actividad registrada.</p>
+                            @endforelse
                         </div>
                     </x-ui.card>
                 @endfragment
@@ -263,7 +251,7 @@
             >
                 <x-slot:headerActions>
                     <span class="crm-card__subtitle">Total proyectado:</span>
-                    <span class="crm-metric-inline">${{ number_format($closingTotal) }} USD</span>
+                    <span class="crm-metric-inline">${{ number_format($closingTotal, 2) }} USD</span>
                 </x-slot:headerActions>
 
                 <x-ui.table :empty="count($closingDeals) === 0" emptyTitle="Sin tratos próximos a cerrar" emptyDescription="Agrega nuevas oportunidades para proyectar cierres.">
@@ -296,7 +284,7 @@
                                     <span>{{ $deal['company_name'] }}</span>
                                 </span>
                             </td>
-                            <td class="is-numeric"><strong>${{ number_format($deal['amount']) }}</strong></td>
+                            <td class="is-numeric"><strong>${{ number_format($deal['amount'], 2) }}</strong></td>
                             <td>
                                 <div class="crm-row crm-row--nowrap">
                                     <div class="crm-progress crm-progress--sm">
@@ -349,7 +337,8 @@
                         name="company_name"
                         label="Empresa Asociada"
                         type="select"
-                        :options="collect($companies)->pluck('name', 'name')->toArray()"
+                        placeholder="Selecciona una empresa"
+                        :options="$crmCompanies"
                         required
                     />
                     <div class="crm-form-row-2">
@@ -358,8 +347,8 @@
                             label="Valor Estimado"
                             type="number"
                             prefix="USD $"
-                            value="25000"
                             min="100"
+                            step="0.01"
                             required
                         />
                         <x-ui.form-field
@@ -379,19 +368,15 @@
                         <x-ui.form-field
                             name="close_date"
                             label="Fecha Estimada de Cierre"
-                            value="30 Nov 2025"
+                            type="date"
                             required
                         />
                         <x-ui.form-field
                             name="owner_name"
                             label="Ejecutivo Responsable"
                             type="select"
-                            value="Sofía Méndez"
-                            :options="[
-                                'Sofía Méndez' => 'Sofía Méndez',
-                                'Carlos Vega' => 'Carlos Vega',
-                                'Diego Cruz' => 'Diego Cruz',
-                            ]"
+                            :value="auth()->id()"
+                            :options="$crmUsers"
                             required
                         />
                     </div>

@@ -18,6 +18,8 @@
     $fieldId = $id ?? 'field-' . str_replace(['.', '[', ']'], '-', $name) . '-' . substr(md5($name . $label), 0, 6);
     $errorId = "{$fieldId}-error";
     $hintId = $hint ? "{$fieldId}-hint" : null;
+    $hasError = $errors->has($name);
+    $describedBy = implode(' ', array_filter([$hintId, $hasError ? $errorId : null]));
 
     $controlClasses = ['crm-field__control'];
     if ($icon) {
@@ -60,7 +62,8 @@
                 id="{{ $fieldId }}"
                 name="{{ $name }}"
                 data-error="{{ $errorId }}"
-                @if($hintId) aria-describedby="{{ $hintId }}" @endif
+                @if($describedBy) aria-describedby="{{ $describedBy }}" @endif
+                @if($hasError) aria-invalid="true" @endif
                 @if($required) required @endif
                 @if($validateMsg) validate-msg="{{ $validateMsg }}" @endif
                 {{ $attributes->merge(['class' => implode(' ', $controlClasses)]) }}
@@ -79,7 +82,8 @@
                 rows="{{ $rows }}"
                 placeholder="{{ $placeholder }}"
                 data-error="{{ $errorId }}"
-                @if($hintId) aria-describedby="{{ $hintId }}" @endif
+                @if($describedBy) aria-describedby="{{ $describedBy }}" @endif
+                @if($hasError) aria-invalid="true" @endif
                 @if($required) required @endif
                 @if($validateMsg) validate-msg="{{ $validateMsg }}" @endif
                 {{ $attributes->merge(['class' => implode(' ', $controlClasses)]) }}
@@ -92,7 +96,8 @@
                 value="{{ $value }}"
                 placeholder="{{ $placeholder }}"
                 data-error="{{ $errorId }}"
-                @if($hintId) aria-describedby="{{ $hintId }}" @endif
+                @if($describedBy) aria-describedby="{{ $describedBy }}" @endif
+                @if($hasError) aria-invalid="true" @endif
                 @if($required) required @endif
                 @if($validateMsg) validate-msg="{{ $validateMsg }}" @endif
                 {{ $attributes->merge(['class' => implode(' ', $controlClasses)]) }}
@@ -100,5 +105,5 @@
         @endif
     </div>
 
-    <div id="{{ $errorId }}" class="crm-field__error" data-error-for="{{ $name }}"></div>
+    <div id="{{ $errorId }}" class="crm-field__error" data-error-for="{{ $name }}">@error($name) {{ $message }} @enderror</div>
 </div>

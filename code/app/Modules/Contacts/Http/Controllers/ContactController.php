@@ -37,7 +37,7 @@ class ContactController extends Controller
                 if ($source !== '' && $contact['source'] !== $source) {
                     return false;
                 }
-                if ($owner !== '' && $contact['owner'] !== $owner) {
+                if ($owner !== '' && $contact['owner_id'] !== $owner) {
                     return false;
                 }
 
@@ -56,7 +56,7 @@ class ContactController extends Controller
 
         $companyOptions = [];
         foreach ($state['companies'] as $company) {
-            $companyOptions[$company['name']] = $company['name'];
+            $companyOptions[$company['id']] = $company['name'];
         }
 
         $view = view('modules.contacts.index', [

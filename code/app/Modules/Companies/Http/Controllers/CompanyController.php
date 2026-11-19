@@ -32,7 +32,7 @@ class CompanyController extends Controller
                 if ($status !== '' && ! str_contains($company['status'], $status)) {
                     return false;
                 }
-                if ($owner !== '' && $company['owner'] !== $owner) {
+                if ($owner !== '' && $company['owner_id'] !== $owner) {
                     return false;
                 }
 
@@ -40,7 +40,7 @@ class CompanyController extends Controller
             }
         ));
 
-        $activeCompany = $filteredCompanies[0] ?? ($state['companies'][0] ?? null);
+        $activeCompany = $filteredCompanies[0] ?? null;
         if ($selectedId !== '') {
             foreach ($filteredCompanies as $candidate) {
                 if ($candidate['id'] === $selectedId) {
@@ -53,20 +53,16 @@ class CompanyController extends Controller
         $linkedContacts = $activeCompany
             ? array_values(array_filter(
                 $state['contacts'],
-                static fn (array $contact): bool => $contact['company_name'] === $activeCompany['name']
+                static fn (array $contact): bool => $contact['company_id'] === $activeCompany['id']
             ))
             : [];
 
         $companyActivities = $activeCompany
             ? array_values(array_filter(
                 $state['activities'],
-                static fn (array $act): bool => $act['company_name'] === $activeCompany['name']
+                static fn (array $act): bool => $act['company_id'] === $activeCompany['id']
             ))
             : [];
-
-        if (count($companyActivities) === 0) {
-            $companyActivities = array_slice($state['activities'], 0, 3);
-        }
 
         $view = view('modules.companies.index', [
             'companies' => $filteredCompanies,

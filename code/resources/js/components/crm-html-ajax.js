@@ -93,6 +93,11 @@ class CrmHtmlAjax extends HTMLElement {
                 },
             });
 
+            if (response.redirected) {
+                window.location.assign(response.url);
+                return;
+            }
+
             if (!response.ok) {
                 throw new Error('No se pudo actualizar el fragmento.');
             }

@@ -135,6 +135,38 @@
 }
 
 @layer layout {
+  .crm-auth-shell {
+    min-block-size: 100dvh;
+    display: grid;
+    place-items: center;
+    padding: var(--space-xl);
+  }
+
+  .crm-auth-panel {
+    inline-size: min(100%, 28rem);
+  }
+
+  .crm-auth-brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-block-end: var(--space-xl);
+    font-weight: 700;
+  }
+
+  .crm-auth-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-md);
+  }
+
+  .crm-auth-link {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
   .crm-shell {
     --current-sidebar-width: var(--sidebar-width);
     display: flex;

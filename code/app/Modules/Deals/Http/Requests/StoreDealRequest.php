@@ -2,6 +2,7 @@
 
 namespace App\Modules\Deals\Http\Requests;
 
+use App\Modules\Core\Support\CrmAccess;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreDealRequest extends FormRequest
@@ -18,11 +19,11 @@ class StoreDealRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'min:3', 'max:120'],
-            'company_name' => ['required', 'string', 'max:120'],
-            'amount' => ['required', 'integer', 'min:100'],
+            'company_name' => ['bail', 'required', 'integer', CrmAccess::companyExists($this->user())],
+            'amount' => ['required', 'numeric', 'min:100', 'max:999999999999.99', 'decimal:0,2'],
             'stage' => ['required', 'in:prospecto,propuesta,negociacion,ganada,perdida'],
-            'close_date' => ['required', 'string', 'max:40'],
-            'owner_name' => ['required', 'string', 'max:80'],
+            'close_date' => ['required', 'date_format:Y-m-d'],
+            'owner_name' => ['bail', 'required', 'integer', CrmAccess::ownerExists($this->user())],
         ];
     }
 

@@ -14,79 +14,49 @@ class DashboardController extends Controller
     public function index(Request $request): View|string
     {
         $state = $this->repository->all();
-        $stats = $this->repository->computePipelineStats();
         $period = (string) $request->query('period', '30d');
-
-        $multiplier = match ($period) {
-            'month' => 0.85,
-            'quarter' => 1.35,
-            default => 1.0,
+        if (! in_array($period, ['30d', 'month', 'quarter'], true)) {
+            $period = '30d';
+        }
+        $start = match ($period) {
+            'month' => now()->startOfMonth(),
+            'quarter' => now()->startOfQuarter(),
+            default => now()->subDays(30),
         };
-
-        $openValue = (int) round($stats['open_value'] * $multiplier);
-        $pendingTasks = array_values(array_filter(
-            $state['activities'],
-            static fn (array $act): bool => ! $act['completed']
-        ));
-        $completedCount = count(array_filter(
-            $state['activities'],
-            static fn (array $act): bool => (bool) $act['completed']
-        ));
-        $totalTasks = count($state['activities']);
-        $closingDeals = array_values(array_filter(
-            $state['deals'],
-            static fn (array $deal): bool => (bool) ($deal['closing_soon'] ?? false)
-        ));
-
-        $closingTotal = array_sum(array_column($closingDeals, 'amount'));
-
-        $recentFeed = [
-            [
-                'actor' => 'Sofía Méndez',
-                'time' => 'Hace 15m',
-                'tone' => 'primary',
-                'summary' => 'Cambió de etapa Contrato Cloud Enterprise a Negociación',
-                'meta' => '$34,000 USD · Soluciones Alpha',
-                'quote' => null,
-            ],
-            [
-                'actor' => 'Carlos Vega',
-                'time' => 'Hace 1h',
-                'tone' => 'neutral',
-                'summary' => 'Registró llamada con Elena Ramos (FinanSmart)',
-                'meta' => null,
-                'quote' => '“Feedback positivo sobre la cotización personalizada”',
-            ],
-            [
-                'actor' => 'Nuevo Prospecto',
-                'time' => 'Hace 3h',
-                'tone' => 'emerald',
-                'summary' => 'Asignado automáticamente: DataDrive Latam',
-                'meta' => 'Origen: Formulario Web Inbound',
-                'quote' => null,
-            ],
-            [
-                'actor' => 'Diego Cruz',
-                'time' => 'Hace 4h',
-                'tone' => 'primary',
-                'summary' => 'Agendó reunión técnica “Revisión de API y Seguridad”',
-                'meta' => 'Mañana a las 11:00 AM',
-                'quote' => null,
-            ],
-        ];
+        $end = match ($period) {
+            'month' => now()->endOfMonth(),
+            'quarter' => now()->endOfQuarter(),
+            default => now()->addDays(30)->endOfDay(),
+        };
+        $periodDeals = collect($state['deals'])->filter(fn (array $deal): bool => $deal['created_at'] >= $start && $deal['created_at'] <= now());
+        $openDeals = $periodDeals->whereNotIn('stage', ['ganada', 'perdida']);
+        $closedDeals = $periodDeals->whereIn('stage', ['ganada', 'perdida']);
+        $conversionRate = $closedDeals->isEmpty() ? 0 : round($closedDeals->where('stage', 'ganada')->count() / $closedDeals->count() * 100, 1);
+        $tasks = collect($state['activities'])->filter(fn (array $activity): bool => $activity['due_date']?->isToday() ?? false);
+        $pendingTasks = $tasks->where('completed', false);
+        $closingDeals = collect($state['deals'])->filter(fn (array $deal): bool => ! in_array($deal['stage'], ['ganada', 'perdida'], true)
+            && $deal['close_date_iso'] && $deal['close_date_iso'] >= now()->toDateString() && $deal['close_date_iso'] <= $end->toDateString())->values()->all();
+        $recentFeed = collect($state['activities'])->take(5)->map(fn (array $activity): array => [
+            'actor' => $activity['owner'],
+            'time' => $activity['created_at']->diffForHumans(),
+            'tone' => $activity['completed'] ? 'emerald' : 'primary',
+            'summary' => $activity['subject'],
+            'meta' => $activity['company_name'],
+            'quote' => $activity['notes'],
+        ])->all();
 
         $view = view('modules.dashboard.index', [
             'period' => $period,
-            'openValue' => $openValue,
-            'conversionRate' => $stats['conversion_rate'],
-            'leadsCount' => count($state['contacts']),
+            'openValue' => $openDeals->sum('amount'),
+            'conversionRate' => $conversionRate,
+            'leadsCount' => collect($state['contacts'])->filter(fn (array $contact): bool => $contact['created_at'] >= $start && $contact['created_at'] <= now())->count(),
             'pendingTasksCount' => count($pendingTasks),
-            'completedTasksCount' => $completedCount,
-            'totalTasksCount' => $totalTasks,
-            'tasks' => array_slice($state['activities'], 0, 5),
+            'completedTasksCount' => $tasks->where('completed', true)->count(),
+            'totalTasksCount' => $tasks->count(),
+            'tasks' => $tasks->take(5)->all(),
             'recentFeed' => $recentFeed,
             'closingDeals' => $closingDeals,
-            'closingTotal' => $closingTotal,
+            'closingTotal' => array_sum(array_column($closingDeals, 'amount')),
             'stages' => $state['stages'],
             'companies' => $state['companies'],
         ]);

@@ -10,7 +10,7 @@
                 >
                     @fragment('companies-kpi')
                         <x-ui.badge variant="primary" :dot="false">
-                            <span class="tabular-nums">{{ $totalCompanies }} Empresas activas</span>
+                            <span class="tabular-nums">{{ $totalCompanies }} Empresas</span>
                         </x-ui.badge>
                     @endfragment
                 </crm-html-ajax>
@@ -81,9 +81,9 @@
                         <label for="filter-owner" class="sr-only">Responsable</label>
                         <select id="filter-owner" name="owner" class="crm-field__control crm-filter-select">
                             <option value="">Responsable: Todos</option>
-                            <option value="Sofía Méndez" @selected($filters['owner'] === 'Sofía Méndez')>Sofía Méndez</option>
-                            <option value="Carlos Vega" @selected($filters['owner'] === 'Carlos Vega')>Carlos Vega</option>
-                            <option value="Diego Cruz" @selected($filters['owner'] === 'Diego Cruz')>Diego Cruz</option>
+                            @foreach($crmUsers as $id => $name)
+                                <option value="{{ $id }}" @selected($filters['owner'] === (string) $id)>{{ $name }}</option>
+                            @endforeach
                         </select>
 
                         <span class="crm-card__subtitle">
@@ -130,8 +130,8 @@
                                 <td>{{ $company['industry'] }}</td>
                                 <td>{{ $company['location'] }}</td>
                                 <td><x-ui.badge :variant="$company['status_variant']">{{ $company['status'] }}</x-ui.badge></td>
-                                <td class="is-numeric"><strong>${{ number_format($company['deals_total']) }} USD</strong></td>
-                                <td class="is-numeric">${{ number_format($company['mrr']) }}/mes</td>
+                                <td class="is-numeric"><strong>${{ number_format($company['deals_total'], 2) }} USD</strong></td>
+                                <td class="is-numeric">${{ number_format($company['mrr'], 2) }}/mes</td>
                                 <td>{{ $company['owner'] }}</td>
                             </tr>
                         @endforeach
@@ -148,7 +148,9 @@
                                         <h2 class="crm-card__title">{{ $activeCompany['name'] }}</h2>
                                         <div class="crm-row crm-card__subtitle">
                                             <span class="tabular-nums">{{ $activeCompany['tax_id'] }}</span>
-                                            <span aria-hidden="true">•</span>
+                                            @if($activeCompany['tax_id'] && $activeCompany['tier'])
+                                                <span aria-hidden="true">•</span>
+                                            @endif
                                             <span>{{ $activeCompany['tier'] }}</span>
                                         </div>
                                     </div>
@@ -173,10 +175,14 @@
                                 </div>
                                 <div class="crm-meta-grid__item">
                                     <span class="crm-meta-grid__label">Sitio Web</span>
-                                    <a href="https://{{ $activeCompany['website'] }}" target="_blank" rel="noopener" class="crm-meta-grid__value crm-icon--primary">
-                                        <span class="material-symbols-outlined crm-icon crm-icon--xs" aria-hidden="true">link</span>
-                                        <span class="truncate">{{ $activeCompany['website'] }}</span>
-                                    </a>
+                                    @if($activeCompany['website'])
+                                        <a href="{{ \Illuminate\Support\Str::startsWith($activeCompany['website'], ['http://', 'https://']) ? $activeCompany['website'] : 'https://' . $activeCompany['website'] }}" target="_blank" rel="noopener" class="crm-meta-grid__value crm-icon--primary">
+                                            <span class="material-symbols-outlined crm-icon crm-icon--xs" aria-hidden="true">link</span>
+                                            <span class="truncate">{{ $activeCompany['website'] }}</span>
+                                        </a>
+                                    @else
+                                        <span class="crm-meta-grid__value">Sin sitio web</span>
+                                    @endif
                                 </div>
                                 <div class="crm-meta-grid__item">
                                     <span class="crm-meta-grid__label">Teléfono Directo</span>
@@ -189,7 +195,7 @@
 
                             <div class="crm-row crm-row--between">
                                 <x-ui.button variant="primary" icon="add_circle" href="{{ route('deals.index') }}">
-                                    Nueva Oportunidad
+                                    Ver oportunidades
                                 </x-ui.button>
                                 <x-ui.button variant="secondary" icon="playlist_add" data-dialog-open="quick-action-dialog">
                                     Actividad
@@ -198,19 +204,15 @@
                         </x-ui.card>
 
                         <x-ui.card title="Métricas Financieras de Cuenta" variant="metric">
-                            <x-slot:headerActions>
-                                <x-ui.badge variant="neutral" :dot="false">Q3 • 2025</x-ui.badge>
-                            </x-slot:headerActions>
-
                             <div class="crm-kpi-box">
                                 <span class="crm-meta-grid__label">Valor Total en Deals</span>
-                                <span class="crm-metric-inline">${{ number_format($activeCompany['deals_total']) }}</span>
+                                <span class="crm-metric-inline">${{ number_format($activeCompany['deals_total'], 2) }}</span>
                                 <span class="crm-card__subtitle">{{ $activeCompany['deals_count'] }} oportunidades abiertas</span>
                             </div>
 
                             <div class="crm-kpi-box">
                                 <span class="crm-meta-grid__label">MRR Recurrente Actual</span>
-                                <span class="crm-metric-inline">${{ number_format($activeCompany['mrr']) }} /mes</span>
+                                <span class="crm-metric-inline">${{ number_format($activeCompany['mrr'], 2) }} /mes</span>
                                 <span class="crm-card__subtitle">{{ $activeCompany['mrr_plan'] }}</span>
                             </div>
 
@@ -272,8 +274,7 @@
                                     <form action="{{ route('activities.store') }}" method="POST" class="crm-stack">
                                         @csrf
                                         <input type="hidden" name="type" value="nota">
-                                        <input type="hidden" name="company_name" value="{{ $activeCompany['name'] }}">
-                                        <input type="hidden" name="schedule_label" value="Ahora">
+                                        <input type="hidden" name="company_name" value="{{ $activeCompany['id'] }}">
                                         <x-ui.form-field
                                             name="subject"
                                             label="Resumen de la interacción"
@@ -288,7 +289,7 @@
                                             placeholder="Escribe una nota rápida o registra un acuerdo con {{ $activeCompany['name'] }}..."
                                         />
                                         <div class="crm-row crm-row--between">
-                                            <span class="crm-card__subtitle">Visible para todo el equipo comercial</span>
+                                            <span class="crm-card__subtitle">Visible según la asignación del responsable</span>
                                             <x-ui.button type="submit" variant="primary" icon="save">Guardar Nota</x-ui.button>
                                         </div>
                                     </form>
@@ -298,7 +299,7 @@
 
                         <x-ui.card title="Cronograma de Actividades Recientes" icon="dynamic_feed">
                             <div class="crm-timeline">
-                                @foreach($companyActivities as $act)
+                                @forelse($companyActivities as $act)
                                     <div class="crm-timeline__item">
                                         <div class="crm-timeline__node crm-timeline__node--{{ $act['completed'] ? 'emerald' : 'primary' }}" aria-hidden="true">
                                             <span class="crm-timeline__node-dot"></span>
@@ -311,11 +312,15 @@
                                             <p class="crm-card__subtitle">{{ $act['notes'] ?: 'Seguimiento registrado por ' . $act['owner'] }}</p>
                                             <div class="crm-row">
                                                 <x-ui.badge variant="neutral" :dot="false">{{ ucfirst($act['type']) }}</x-ui.badge>
-                                                <span class="crm-card__subtitle">Interlocutor: {{ $act['contact_name'] }}</span>
+                                                @if($act['contact_name'])
+                                                    <span class="crm-card__subtitle">Interlocutor: {{ $act['contact_name'] }}</span>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
-                                @endforeach
+                                @empty
+                                    <p class="crm-card__subtitle">Sin actividades vinculadas todavía.</p>
+                                @endforelse
                             </div>
                         </x-ui.card>
                     </div>
@@ -378,7 +383,6 @@
                             name="location"
                             label="Ubicación"
                             placeholder="Madrid, España"
-                            value="Madrid, España"
                             required
                         />
                     </div>
@@ -400,12 +404,8 @@
                             name="owner"
                             label="Responsable"
                             type="select"
-                            value="Sofía Méndez"
-                            :options="[
-                                'Sofía Méndez' => 'Sofía Méndez',
-                                'Carlos Vega' => 'Carlos Vega',
-                                'Diego Cruz' => 'Diego Cruz',
-                            ]"
+                            :value="auth()->id()"
+                            :options="$crmUsers"
                             required
                         />
                         <x-ui.form-field
@@ -415,6 +415,7 @@
                             prefix="USD $"
                             value="0"
                             min="0"
+                            step="0.01"
                         />
                     </div>
                     <div class="crm-row crm-row--end crm-form-actions">

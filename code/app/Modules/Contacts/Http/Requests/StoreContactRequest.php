@@ -2,6 +2,7 @@
 
 namespace App\Modules\Contacts\Http\Requests;
 
+use App\Modules\Core\Support\CrmAccess;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreContactRequest extends FormRequest
@@ -19,10 +20,11 @@ class StoreContactRequest extends FormRequest
         return [
             'first_name' => ['required', 'string', 'min:2', 'max:60'],
             'last_name' => ['required', 'string', 'min:2', 'max:60'],
-            'email' => ['required', 'email', 'max:120'],
+            'email' => ['required', 'email', 'max:120', 'unique:contacts,email'],
             'phone' => ['nullable', 'string', 'max:40'],
             'role' => ['required', 'string', 'max:80'],
-            'company_name' => ['required', 'string', 'max:120'],
+            'company_name' => ['bail', 'required', 'integer', CrmAccess::companyExists($this->user())],
+            'owner' => ['bail', 'nullable', 'integer', CrmAccess::ownerExists($this->user())],
             'source' => ['required', 'string', 'max:60'],
             'status' => ['required', 'string', 'max:40'],
             'notes' => ['nullable', 'string', 'max:500'],

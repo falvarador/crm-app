@@ -3,7 +3,6 @@
         <div class="crm-page-header__title-group">
             <div class="crm-page-header__title-row">
                 <h1 class="crm-page-header__title">Pipeline de Ventas</h1>
-                <x-ui.badge variant="primary" :dot="false">Q2 • Q3</x-ui.badge>
             </div>
             <p class="crm-page-header__subtitle">
                 Flujo comercial interactivo y seguimiento de oportunidades activas
@@ -34,9 +33,9 @@
                 <label for="deals-owner-filter" class="sr-only">Propietario</label>
                 <select id="deals-owner-filter" name="owner" class="crm-field__control crm-filter-select">
                     <option value="">Propietario: Todos</option>
-                    <option value="Sofía Méndez" @selected($filters['owner'] === 'Sofía Méndez')>Sofía Méndez</option>
-                    <option value="Carlos Vega" @selected($filters['owner'] === 'Carlos Vega')>Carlos Vega</option>
-                    <option value="Diego Cruz" @selected($filters['owner'] === 'Diego Cruz')>Diego Cruz</option>
+                    @foreach($crmUsers as $id => $name)
+                        <option value="{{ $id }}" @selected($filters['owner'] === (string) $id)>{{ $name }}</option>
+                    @endforeach
                 </select>
                 <x-ui.button type="submit" variant="secondary" size="sm" icon="filter_alt">Filtrar</x-ui.button>
                 @if($filters['owner'] !== '' || $filters['stage'] !== '')
@@ -54,7 +53,7 @@
                 <div class="crm-row">
                     <x-ui.badge variant="primary">
                         <span>Pipeline Ponderado:</span>
-                        <strong class="tabular-nums">${{ number_format($weightedValue) }} USD</strong>
+                        <strong class="tabular-nums">${{ number_format($weightedValue, 2) }} USD</strong>
                         <span>/ {{ $totalDealsCount }} oportunidades</span>
                     </x-ui.badge>
                 </div>
@@ -99,7 +98,7 @@
 
                                 <div class="crm-kanban__col-subtotal-row">
                                     <span class="crm-kanban__col-subtotal-label">Subtotal</span>
-                                    <span class="crm-kanban__col-subtotal-val tabular-nums" data-stage-subtotal>${{ number_format($stageTotal) }} USD</span>
+                                    <span class="crm-kanban__col-subtotal-val tabular-nums" data-stage-subtotal>${{ number_format($stageTotal, 2) }} USD</span>
                                 </div>
 
                                 <div class="crm-kanban__cards" data-kanban-cards>
@@ -136,7 +135,7 @@
                                             @endif
 
                                             <div class="crm-deal-card__metrics">
-                                                <span class="crm-deal-card__amount tabular-nums">${{ number_format($deal['amount']) }}</span>
+                                                <span class="crm-deal-card__amount tabular-nums">${{ number_format($deal['amount'], 2) }}</span>
                                                 <x-ui.badge :variant="$stageMeta['color']">
                                                     <span class="tabular-nums">{{ $deal['probability'] }}% prob.</span>
                                                 </x-ui.badge>
@@ -196,7 +195,7 @@
                             <td><strong>{{ $deal['title'] }}</strong></td>
                             <td>{{ $deal['company_name'] }}</td>
                             <td><x-ui.badge :variant="$stageInfo['color']">{{ $stageInfo['label'] }}</x-ui.badge></td>
-                            <td class="is-numeric"><strong>${{ number_format($deal['amount']) }} USD</strong></td>
+                            <td class="is-numeric"><strong>${{ number_format($deal['amount'], 2) }} USD</strong></td>
                             <td class="is-numeric">{{ $deal['probability'] }}%</td>
                             <td class="is-numeric">{{ $deal['close_date'] }}</td>
                             <td>
@@ -234,6 +233,7 @@
                         name="company_name"
                         label="Empresa Cliente"
                         type="select"
+                        placeholder="Selecciona una empresa"
                         :options="$companyOptions"
                         required
                     />
@@ -243,8 +243,8 @@
                             label="Valor Estimado"
                             type="number"
                             prefix="USD $"
-                            value="32000"
                             min="100"
+                            step="0.01"
                             required
                         />
                         <x-ui.form-field
@@ -266,19 +266,15 @@
                         <x-ui.form-field
                             name="close_date"
                             label="Fecha Estimada de Cierre"
-                            value="30 Jun 2025"
+                            type="date"
                             required
                         />
                         <x-ui.form-field
                             name="owner_name"
                             label="Propietario"
                             type="select"
-                            value="Sofía Méndez"
-                            :options="[
-                                'Sofía Méndez' => 'Sofía Méndez',
-                                'Carlos Vega' => 'Carlos Vega',
-                                'Diego Cruz' => 'Diego Cruz',
-                            ]"
+                            :value="auth()->id()"
+                            :options="$crmUsers"
                             required
                         />
                     </div>

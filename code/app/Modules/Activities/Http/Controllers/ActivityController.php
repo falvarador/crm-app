@@ -56,13 +56,16 @@ class ActivityController extends Controller
             'completedActivities' => $completedActivities,
             'totalPending' => $totalPending,
             'totalCompleted' => $totalCompleted,
-            'overdueCount' => 2,
+            'overdueCount' => count(array_filter(
+                $state['activities'],
+                static fn (array $activity): bool => ! $activity['completed'] && $activity['due_date'] && $activity['due_date']->isPast()
+            )),
             'companies' => $state['companies'],
         ]);
 
         if ($request->hasHeader('X-Fragment-Request')) {
             $fragment = (string) $request->header('X-Fragment-Name', 'activities-feed');
-            $allowed = ['activities-kpi', 'activities-feed'];
+            $allowed = ['activities-kpi', 'activities-feed', 'activities-summary'];
 
             return $view->fragment(in_array($fragment, $allowed, true) ? $fragment : 'activities-feed');
         }
