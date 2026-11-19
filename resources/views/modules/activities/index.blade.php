@@ -62,7 +62,7 @@
 
             <crm-form-validate>
                 <crm-form-ajax event-keys="activities:updated,kpi:updated" reset-on-success>
-                    <form action="{{ route('activities.store') }}" method="POST" class="crm-stack">
+                    <form id="activity-create-form" action="{{ route('activities.store') }}" method="POST" class="crm-stack">
                         @csrf
                         <input type="hidden" name="type" value="llamada" data-activity-type-input>
 
@@ -154,12 +154,11 @@
     </div>
 
     <div class="crm-stack">
-        <div class="crm-segmented" role="tablist" aria-label="Filtrar actividades">
+        <div class="crm-segmented" role="group" aria-label="Filtrar actividades">
             <button
                 type="button"
-                role="tab"
                 class="crm-segmented__btn {{ $filter === 'all' ? 'is-active' : '' }}"
-                aria-selected="{{ $filter === 'all' ? 'true' : 'false' }}"
+                aria-pressed="{{ $filter === 'all' ? 'true' : 'false' }}"
                 data-fragment-nav="{{ route('activities.index', ['filter' => 'all']) }}"
                 data-target-fragments="activities-feed"
             >
@@ -167,9 +166,8 @@
             </button>
             <button
                 type="button"
-                role="tab"
                 class="crm-segmented__btn {{ $filter === 'pending' ? 'is-active' : '' }}"
-                aria-selected="{{ $filter === 'pending' ? 'true' : 'false' }}"
+                aria-pressed="{{ $filter === 'pending' ? 'true' : 'false' }}"
                 data-fragment-nav="{{ route('activities.index', ['filter' => 'pending']) }}"
                 data-target-fragments="activities-feed"
             >
@@ -177,9 +175,8 @@
             </button>
             <button
                 type="button"
-                role="tab"
                 class="crm-segmented__btn {{ $filter === 'completed' ? 'is-active' : '' }}"
-                aria-selected="{{ $filter === 'completed' ? 'true' : 'false' }}"
+                aria-pressed="{{ $filter === 'completed' ? 'true' : 'false' }}"
                 data-fragment-nav="{{ route('activities.index', ['filter' => 'completed']) }}"
                 data-target-fragments="activities-feed"
             >
@@ -187,9 +184,8 @@
             </button>
             <button
                 type="button"
-                role="tab"
                 class="crm-segmented__btn {{ $filter === 'llamada' ? 'is-active' : '' }}"
-                aria-selected="{{ $filter === 'llamada' ? 'true' : 'false' }}"
+                aria-pressed="{{ $filter === 'llamada' ? 'true' : 'false' }}"
                 data-fragment-nav="{{ route('activities.index', ['filter' => 'llamada']) }}"
                 data-target-fragments="activities-feed"
             >
@@ -197,9 +193,8 @@
             </button>
             <button
                 type="button"
-                role="tab"
                 class="crm-segmented__btn {{ $filter === 'reunion' ? 'is-active' : '' }}"
-                aria-selected="{{ $filter === 'reunion' ? 'true' : 'false' }}"
+                aria-pressed="{{ $filter === 'reunion' ? 'true' : 'false' }}"
                 data-fragment-nav="{{ route('activities.index', ['filter' => 'reunion']) }}"
                 data-target-fragments="activities-feed"
             >
@@ -318,6 +313,7 @@
                                 </div>
                                 <h3 class="crm-table-empty__title">Sin actividades en esta vista</h3>
                                 <p class="crm-table-empty__desc">Registra una nueva llamada, reunión o tarea usando el panel superior.</p>
+                                <x-ui.button href="#activity-create-form" variant="secondary" icon="add">Registrar actividad</x-ui.button>
                             </div>
                         </x-ui.card>
                     @endif

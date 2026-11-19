@@ -19,7 +19,7 @@
             @endisset
         </div>
     @else
-        <div class="crm-table-wrapper__scroll">
+        <div class="crm-table-wrapper__scroll" role="region" aria-label="Tabla con desplazamiento horizontal" tabindex="0">
             <table class="crm-table {{ $dense ? 'crm-table--dense' : '' }}">
                 @isset($head)
                     <thead>

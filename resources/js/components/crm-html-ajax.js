@@ -50,8 +50,8 @@ class CrmHtmlAjax extends HTMLElement {
             return;
         }
         if (event.detail?.url) {
-            this.setAttribute('url', event.detail.url);
-            this.reload(event.detail.url);
+            const request = this.reload(event.detail.url, { deferRender: Boolean(event.detail.deferRender) });
+            event.detail.requests?.push(request);
         }
     }
 
@@ -66,25 +66,33 @@ class CrmHtmlAjax extends HTMLElement {
         const params = new URLSearchParams(new FormData(form));
         const baseUrl = (form.getAttribute('action') || this.getAttribute('url') || window.location.pathname).split('?')[0];
         const nextUrl = `${baseUrl}?${params.toString()}`;
-        this.setAttribute('url', nextUrl);
         this.reload(nextUrl);
     }
 
-    async reload(overrideUrl = null) {
+    async reload(overrideUrl = null, { deferRender = false } = {}) {
         const url = overrideUrl || this.getAttribute('url') || window.location.href;
         const fragment = this.getAttribute('fragment') || '';
 
         if (this.abortController) {
             this.abortController.abort();
         }
-        this.abortController = new AbortController();
+        const controller = new AbortController();
+        this.abortController = controller;
 
         this.setAttribute('aria-busy', 'true');
+        let deferred = false;
+
+        const finish = () => {
+            if (this.abortController === controller) {
+                this.removeAttribute('aria-busy');
+                this.abortController = null;
+            }
+        };
 
         try {
             const response = await fetch(url, {
                 method: 'GET',
-                signal: this.abortController.signal,
+                signal: controller.signal,
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
                     'X-Fragment-Request': 'true',
@@ -93,6 +101,7 @@ class CrmHtmlAjax extends HTMLElement {
                 },
             });
 
+            if (this.abortController !== controller || controller.signal.aborted) return;
             if (response.redirected) {
                 window.location.assign(response.url);
                 return;
@@ -103,9 +112,25 @@ class CrmHtmlAjax extends HTMLElement {
             }
 
             const html = await response.text();
-            this.innerHTML = html;
+            if (this.abortController !== controller || controller.signal.aborted) return;
+            const commit = () => {
+                if (this.abortController !== controller || controller.signal.aborted) return;
+                this.innerHTML = html;
+                this.setAttribute('url', url);
+                this.dispatchEvent(new CustomEvent('crm:fragment-loaded', {
+                    bubbles: true,
+                    detail: { fragment, url },
+                }));
+                finish();
+            };
+
+            if (deferRender) {
+                deferred = true;
+                return { commit, discard: finish, isCurrent: () => this.abortController === controller && !controller.signal.aborted };
+            }
+            commit();
         } catch (error) {
-            if (error.name !== 'AbortError') {
+            if (this.abortController === controller && !controller.signal.aborted && error.name !== 'AbortError') {
                 window.dispatchEvent(
                     new CustomEvent('crm:toast', {
                         detail: {
@@ -117,7 +142,7 @@ class CrmHtmlAjax extends HTMLElement {
                 );
             }
         } finally {
-            this.removeAttribute('aria-busy');
+            if (!deferred) finish();
         }
     }
 }

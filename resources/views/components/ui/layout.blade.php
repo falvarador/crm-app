@@ -13,6 +13,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title }} — Aura CRM</title>
 
+    <x-ui.theme-init />
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
@@ -22,7 +24,7 @@
 </head>
 <body>
     <div class="crm-shell">
-        <aside class="crm-sidebar" data-crm-sidebar data-collapsed="false" aria-label="Navegación principal">
+        <aside id="crm-sidebar" class="crm-sidebar" data-crm-sidebar data-collapsed="false" aria-label="Navegación principal">
             <div class="crm-sidebar__top">
                 <div class="crm-sidebar__brand-row">
                     <button type="button" class="crm-sidebar__workspace-btn" data-dialog-open="command-palette-dialog">
@@ -41,6 +43,9 @@
                         title="Colapsar barra lateral"
                     >
                         <span class="material-symbols-outlined crm-icon crm-icon--md" aria-hidden="true">dock_to_left</span>
+                    </button>
+                    <button type="button" class="crm-sidebar__mobile-close crm-btn crm-btn--ghost crm-btn--icon" data-sidebar-mobile-close aria-label="Cerrar menú de navegación">
+                        <span class="material-symbols-outlined" aria-hidden="true">close</span>
                     </button>
                 </div>
 
@@ -87,10 +92,13 @@
             <div class="crm-sidebar__footer">
                 <div class="crm-sidebar__theme-row">
                     <div class="crm-segmented" role="group" aria-label="Selector de tema visual">
-                        <button type="button" class="crm-segmented__btn crm-segmented__btn--compact is-active" data-theme-set="light" aria-pressed="true" aria-label="Tema claro">
+                        <button type="button" class="crm-segmented__btn crm-segmented__btn--compact is-active" data-theme-set="system" aria-pressed="true" aria-label="Tema del sistema" title="Tema del sistema">
+                            <span class="material-symbols-outlined crm-icon crm-icon--xs" aria-hidden="true">brightness_auto</span>
+                        </button>
+                        <button type="button" class="crm-segmented__btn crm-segmented__btn--compact" data-theme-set="light" aria-pressed="false" aria-label="Tema claro" title="Tema claro">
                             <span class="material-symbols-outlined crm-icon crm-icon--xs" aria-hidden="true">light_mode</span>
                         </button>
-                        <button type="button" class="crm-segmented__btn crm-segmented__btn--compact" data-theme-set="dark" aria-pressed="false" aria-label="Tema oscuro">
+                        <button type="button" class="crm-segmented__btn crm-segmented__btn--compact" data-theme-set="dark" aria-pressed="false" aria-label="Tema oscuro" title="Tema oscuro">
                             <span class="material-symbols-outlined crm-icon crm-icon--xs" aria-hidden="true">dark_mode</span>
                         </button>
                     </div>
@@ -124,6 +132,8 @@
                         type="button"
                         class="crm-btn crm-btn--ghost crm-btn--icon crm-topbar__mobile-trigger"
                         data-sidebar-mobile-toggle
+                        aria-controls="crm-sidebar"
+                        aria-expanded="false"
                         aria-label="Abrir menú de navegación"
                     >
                         <span class="material-symbols-outlined" aria-hidden="true">menu</span>
@@ -136,7 +146,7 @@
                 </div>
 
                 <div class="crm-topbar__actions">
-                    <button type="button" class="crm-topbar__search-btn" data-dialog-open="command-palette-dialog">
+                    <button type="button" class="crm-topbar__search-btn" data-dialog-open="command-palette-dialog" aria-label="Buscar contactos y empresas">
                         <span class="material-symbols-outlined crm-icon crm-icon--sm crm-icon--muted" aria-hidden="true">search</span>
                         <span class="crm-topbar__search-text">Buscar contactos, empresas...</span>
                         <kbd class="crm-btn__kbd">⌘K</kbd>

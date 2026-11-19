@@ -70,6 +70,84 @@ test('hybrid ssr endpoints return only requested blade fragment when X-Fragment-
     'activities feed' => ['/activities', 'activities-feed', 'Demo comercial con VP de TechCorp'],
 ]);
 
+test('empty contact search offers to clear filters', function () {
+    $response = $this->get('/contacts?search=sin-coincidencias-para-la-prueba');
+
+    $response->assertOk()->assertSeeInOrder([
+        'Sin contactos que coincidan',
+        'Limpiar filtros',
+    ]);
+});
+
+test('a seller without contacts can create one from the empty state', function () {
+    $this->actingAs(User::factory()->create(['role' => 'vendedor']));
+
+    $response = $this->get('/contacts');
+
+    $response->assertOk()->assertSeeInOrder([
+        'Sin contactos todavía',
+        'Nuevo Contacto',
+    ]);
+});
+
+test('empty company filters offer to clear the filters', function () {
+    $response = $this->get('/companies?view=table&status=Activa');
+
+    $response->assertOk()->assertSeeInOrder([
+        'No se encontraron empresas',
+        'Limpiar filtros',
+    ]);
+});
+
+test('empty activity views offer a direct way to register an activity', function () {
+    $this->actingAs(User::factory()->create(['role' => 'vendedor']));
+
+    $response = $this->get('/activities');
+
+    $response->assertOk()->assertSeeInOrder([
+        'Sin actividades en esta vista',
+        'Registrar actividad',
+    ]);
+});
+
+test('empty pipelines offer a direct action to create an opportunity', function () {
+    $this->actingAs(User::factory()->create(['role' => 'vendedor']));
+
+    $response = $this->get('/deals');
+
+    $response->assertOk()->assertSeeInOrder([
+        'Sin oportunidades en esta vista',
+        'Nueva Oportunidad',
+    ]);
+});
+
+test('empty pipeline filters offer to clear the filters', function () {
+    $response = $this->get('/deals?owner=999999');
+
+    $response->assertOk()->assertSeeInOrder([
+        'Sin oportunidades en esta vista',
+        'Limpiar filtros',
+    ]);
+});
+
+test('empty dashboard tasks offer a direct action', function () {
+    $this->actingAs(User::factory()->create(['role' => 'vendedor']));
+
+    $response = $this->get('/dashboard');
+
+    $response->assertOk()->assertSeeInOrder([
+        'No hay tareas programadas para hoy.',
+        'Agregar actividad',
+    ]);
+});
+
+test('form errors have a persistent live region', function () {
+    $response = $this->get('/contacts');
+
+    $response->assertOk()
+        ->assertSee('data-error-for="first_name" aria-live="polite" aria-atomic="true"', false);
+});
+
 test('companies store validates and persists new company', function () {
     $invalidResponse = $this->postJson('/companies', []);
     $invalidResponse->assertStatus(422)->assertJsonValidationErrors(['name', 'sector', 'status', 'location', 'owner']);

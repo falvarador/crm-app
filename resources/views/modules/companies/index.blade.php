@@ -21,10 +21,11 @@
         </div>
 
         <div class="crm-page-header__controls">
-            <div class="crm-segmented" role="tablist" aria-label="Modo de visualización de cuentas">
+            <div class="crm-segmented" role="group" aria-label="Modo de visualización de cuentas">
                 <a
                     href="{{ route('companies.index', array_merge(request()->query(), ['view' => 'split'])) }}"
                     class="crm-segmented__btn {{ $filters['view'] !== 'table' ? 'is-active' : '' }}"
+                    @if($filters['view'] !== 'table') aria-current="true" @endif
                     data-fragment-nav="{{ route('companies.index', array_merge(request()->query(), ['view' => 'split'])) }}"
                     data-target-fragments="companies-list"
                 >
@@ -34,6 +35,7 @@
                 <a
                     href="{{ route('companies.index', array_merge(request()->query(), ['view' => 'table'])) }}"
                     class="crm-segmented__btn {{ $filters['view'] === 'table' ? 'is-active' : '' }}"
+                    @if($filters['view'] === 'table') aria-current="true" @endif
                     data-fragment-nav="{{ route('companies.index', array_merge(request()->query(), ['view' => 'table'])) }}"
                     data-target-fragments="companies-list"
                 >
@@ -101,6 +103,13 @@
             @if($filters['view'] === 'table' || !$activeCompany)
                 <div class="crm-section-gap">
                     <x-ui.table :empty="count($companies) === 0" emptyTitle="No se encontraron empresas" emptyDescription="Prueba ajustando los filtros o registra una nueva cuenta comercial.">
+                        <x-slot:emptyAction>
+                            @if($totalCompanies === 0)
+                                <x-ui.button variant="primary" icon="add_business" data-dialog-open="create-company-dialog">Crear Empresa</x-ui.button>
+                            @else
+                                <x-ui.button href="{{ route('companies.index') }}" variant="secondary" icon="restart_alt">Limpiar filtros</x-ui.button>
+                            @endif
+                        </x-slot:emptyAction>
                         <x-slot:head>
                             <tr>
                                 <th>Empresa</th>
@@ -253,11 +262,12 @@
 
                     <div class="crm-stack">
                         <div class="crm-tabs">
-                            <div class="crm-tabs__nav" role="tablist" aria-label="Cuentas activas">
+                            <div class="crm-tabs__nav" role="group" aria-label="Cuentas activas">
                                 @foreach(array_slice($companies, 0, 4) as $tabCompany)
                                     <a
                                         href="{{ route('companies.index', ['company_id' => $tabCompany['id'], 'view' => 'split']) }}"
                                         class="crm-tabs__tab {{ $tabCompany['id'] === $activeCompany['id'] ? 'is-active' : '' }}"
+                                        @if($tabCompany['id'] === $activeCompany['id']) aria-current="true" @endif
                                         data-fragment-nav="{{ route('companies.index', ['company_id' => $tabCompany['id'], 'view' => 'split']) }}"
                                         data-target-fragments="companies-list"
                                     >

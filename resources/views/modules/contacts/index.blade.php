@@ -88,7 +88,14 @@
             </search>
 
             <div class="crm-section-gap">
-                <x-ui.table :empty="count($contacts) === 0" emptyTitle="Sin contactos que coincidan" emptyDescription="No se encontraron prospectos con el filtro actual.">
+                <x-ui.table :empty="count($contacts) === 0" :emptyTitle="$totalContacts === 0 ? 'Sin contactos todavía' : 'Sin contactos que coincidan'" :emptyDescription="$totalContacts === 0 ? 'Crea el primer contacto para empezar a gestionar tus prospectos.' : 'No se encontraron prospectos con el filtro actual.'">
+                    <x-slot:emptyAction>
+                        @if($totalContacts === 0)
+                            <x-ui.button variant="primary" icon="add" data-dialog-open="create-contact-dialog">Nuevo Contacto</x-ui.button>
+                        @else
+                            <x-ui.button href="{{ route('contacts.index') }}" variant="secondary" icon="restart_alt">Limpiar filtros</x-ui.button>
+                        @endif
+                    </x-slot:emptyAction>
                     <x-slot:head>
                         <tr>
                             <th>Nombre y Cargo</th>

@@ -105,5 +105,5 @@
         @endif
     </div>
 
-    <div id="{{ $errorId }}" class="crm-field__error" data-error-for="{{ $name }}">@error($name) {{ $message }} @enderror</div>
+    <div id="{{ $errorId }}" class="crm-field__error" data-error-for="{{ $name }}" aria-live="polite" aria-atomic="true">@error($name) {{ $message }} @enderror</div>
 </div>
