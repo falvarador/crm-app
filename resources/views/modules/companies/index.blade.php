@@ -1,20 +1,7 @@
 <x-ui.layout title="Empresas y Cuentas Comerciales" active="companies" breadcrumb="Empresas y Cuentas">
     <section class="crm-page-header">
         <div class="crm-page-header__title-group">
-            <div class="crm-page-header__title-row">
-                <h1 class="crm-page-header__title">Empresas y Cuentas Comerciales</h1>
-                <crm-html-ajax
-                    url="{{ route('companies.index', request()->query()) }}"
-                    fragment="companies-kpi"
-                    listen-events="companies:updated,kpi:updated"
-                >
-                    @fragment('companies-kpi')
-                        <x-ui.badge variant="primary" :dot="false">
-                            <span class="tabular-nums">{{ $totalCompanies }} Empresas</span>
-                        </x-ui.badge>
-                    @endfragment
-                </crm-html-ajax>
-            </div>
+            <h1 class="crm-page-header__title">Empresas y Cuentas Comerciales</h1>
             <p class="crm-page-header__subtitle">
                 Directorio B2B, métricas financieras por cuenta y cronograma de interlocutores clave
             </p>
@@ -61,7 +48,6 @@
                     <input type="hidden" name="view" value="{{ $filters['view'] }}">
                     <div class="crm-toolbar__filters">
                         <div class="crm-row crm-row--nowrap">
-                            <span class="material-symbols-outlined crm-icon crm-icon--sm crm-icon--muted" aria-hidden="true">filter_list</span>
                             <strong>Filtros:</strong>
                         </div>
 
@@ -95,7 +81,9 @@
 
                     <div class="crm-toolbar__actions">
                         <x-ui.button type="submit" variant="secondary" size="sm" icon="search">Aplicar</x-ui.button>
-                        <x-ui.button href="{{ route('companies.index') }}" variant="ghost" size="sm" icon="restart_alt">Limpiar</x-ui.button>
+                        @if(($filters['sector'] !== '' || $filters['status'] !== '' || $filters['owner'] !== '') && count($companies) > 0)
+                            <x-ui.button href="{{ route('companies.index') }}" variant="ghost" size="sm" icon="restart_alt">Limpiar</x-ui.button>
+                        @endif
                     </div>
                 </form>
             </search>
@@ -129,7 +117,6 @@
                                         href="{{ route('companies.index', ['company_id' => $company['id'], 'view' => 'split']) }}"
                                         class="crm-table-cell-link"
                                     >
-                                        <span class="crm-avatar crm-avatar--sm" aria-hidden="true">{{ $company['initial'] }}</span>
                                         <span class="crm-col">
                                             <span>{{ $company['name'] }}</span>
                                             <span class="crm-card__subtitle">{{ $company['tax_id'] }}</span>
@@ -171,14 +158,12 @@
                                 <div class="crm-meta-grid__item">
                                     <span class="crm-meta-grid__label">Industria</span>
                                     <span class="crm-meta-grid__value">
-                                        <span class="material-symbols-outlined crm-icon crm-icon--xs crm-icon--primary" aria-hidden="true">cloud</span>
                                         <span>{{ $activeCompany['industry'] }}</span>
                                     </span>
                                 </div>
                                 <div class="crm-meta-grid__item">
                                     <span class="crm-meta-grid__label">Ubicación</span>
                                     <span class="crm-meta-grid__value">
-                                        <span class="material-symbols-outlined crm-icon crm-icon--xs crm-icon--muted" aria-hidden="true">location_on</span>
                                         <span>{{ $activeCompany['location'] }}</span>
                                     </span>
                                 </div>
@@ -196,16 +181,12 @@
                                 <div class="crm-meta-grid__item">
                                     <span class="crm-meta-grid__label">Teléfono Directo</span>
                                     <span class="crm-meta-grid__value tabular-nums">
-                                        <span class="material-symbols-outlined crm-icon crm-icon--xs crm-icon--muted" aria-hidden="true">call</span>
                                         <span>{{ $activeCompany['phone'] }}</span>
                                     </span>
                                 </div>
                             </div>
 
-                            <div class="crm-row crm-row--between">
-                                <x-ui.button variant="primary" icon="add_circle" href="{{ route('deals.index') }}">
-                                    Ver oportunidades
-                                </x-ui.button>
+                            <div class="crm-row crm-row--end">
                                 <x-ui.button variant="secondary" icon="playlist_add" data-dialog-open="quick-action-dialog">
                                     Actividad
                                 </x-ui.button>
@@ -238,12 +219,9 @@
 
                             @forelse($linkedContacts as $contact)
                                 <div class="crm-contact-mini">
-                                    <div class="crm-row crm-row--nowrap">
-                                        <span class="crm-avatar" aria-hidden="true">{{ $contact['initials'] }}</span>
-                                        <div class="crm-col">
-                                            <strong>{{ $contact['name'] }}</strong>
-                                            <span class="crm-card__subtitle">{{ $contact['role'] }}</span>
-                                        </div>
+                                    <div class="crm-col">
+                                        <strong>{{ $contact['name'] }}</strong>
+                                        <span class="crm-card__subtitle">{{ $contact['role'] }}</span>
                                     </div>
                                     <div class="crm-row crm-row--nowrap">
                                         @if($contact['role_tag'])
@@ -271,7 +249,6 @@
                                         data-fragment-nav="{{ route('companies.index', ['company_id' => $tabCompany['id'], 'view' => 'split']) }}"
                                         data-target-fragments="companies-list"
                                     >
-                                        <span class="material-symbols-outlined crm-icon crm-icon--sm" aria-hidden="true">domain</span>
                                         <span>{{ $tabCompany['name'] }}</span>
                                     </a>
                                 @endforeach

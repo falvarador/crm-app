@@ -1,11 +1,6 @@
 <x-ui.layout title="Actividades y Seguimiento" active="activities" breadcrumb="Actividades y Tareas">
     <section class="crm-page-header">
         <div class="crm-page-header__title-group">
-            <div class="crm-page-header__eyebrow">
-                <span>Gestión de Pipeline</span>
-                <span aria-hidden="true">•</span>
-                <span class="crm-icon--primary">Tiempo Real</span>
-            </div>
             <h1 class="crm-page-header__title">Actividades y Tareas Comerciales</h1>
             <p class="crm-page-header__subtitle">
                 Registro diario de interacciones, compromisos y llamadas con prospectos clave para acelerar el ciclo de ventas.
@@ -33,7 +28,7 @@
         </crm-html-ajax>
     </section>
 
-    <div class="crm-split-layout crm-split-layout--8-4">
+    <div class="crm-section-gap">
         <x-ui.card title="Registrar Nueva Actividad" icon="add_task" variant="accent">
             <x-slot:headerActions>
                 <div class="crm-segmented" data-activity-type-group role="group" aria-label="Tipo de actividad">
@@ -130,27 +125,6 @@
                 </crm-form-ajax>
             </crm-form-validate>
         </x-ui.card>
-
-        <div class="crm-stack">
-            <crm-html-ajax url="{{ route('activities.index') }}" fragment="activities-summary" listen-events="activities:updated">
-            @fragment('activities-summary')
-            <x-ui.card title="Resumen de Actividades">
-                <div class="crm-row crm-row--between">
-                    <span class="crm-meta-grid__label">Pendientes</span>
-                    <strong class="crm-metric-inline">{{ $totalPending }}</strong>
-                </div>
-                <div class="crm-row crm-row--between">
-                    <span class="crm-meta-grid__label">Vencidas</span>
-                    <strong class="crm-metric-inline">{{ $overdueCount }}</strong>
-                </div>
-                <div class="crm-row crm-row--between">
-                    <span class="crm-meta-grid__label">Completadas</span>
-                    <strong class="crm-metric-inline">{{ $totalCompleted }}</strong>
-                </div>
-            </x-ui.card>
-            @endfragment
-            </crm-html-ajax>
-        </div>
     </div>
 
     <div class="crm-stack">

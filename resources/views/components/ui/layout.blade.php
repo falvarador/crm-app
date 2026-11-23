@@ -27,13 +27,12 @@
         <aside id="crm-sidebar" class="crm-sidebar" data-crm-sidebar data-collapsed="false" aria-label="Navegación principal">
             <div class="crm-sidebar__top">
                 <div class="crm-sidebar__brand-row">
-                    <button type="button" class="crm-sidebar__workspace-btn" data-dialog-open="command-palette-dialog">
+                    <div class="crm-sidebar__workspace">
                         <span class="crm-sidebar__logo-mark" aria-hidden="true">A</span>
                         <span class="crm-sidebar__workspace-meta">
-                            <span class="crm-sidebar__workspace-name">Aura Workspace</span>
-                            <span class="crm-sidebar__workspace-domain">aura.attio.io</span>
+                            <span class="crm-sidebar__workspace-name">Aura CRM</span>
                         </span>
-                    </button>
+                    </div>
                     <button
                         type="button"
                         class="crm-sidebar__collapse-btn"
@@ -63,7 +62,7 @@
                     </button>
                 </div>
 
-                <div class="crm-sidebar__section-label">Espacios</div>
+                <div class="crm-sidebar__section-label">CRM</div>
 
                 <nav class="crm-sidebar__nav">
                     <a href="{{ route('dashboard') }}" class="crm-sidebar__link" @if($active === 'dashboard') aria-current="page" @endif title="Dashboard">
@@ -152,14 +151,6 @@
                         <kbd class="crm-btn__kbd">⌘K</kbd>
                     </button>
 
-                    <div class="crm-topbar__icon-group">
-                        <a href="{{ route('activities.index') }}" class="crm-btn crm-btn--ghost crm-btn--icon" aria-label="Actividades pendientes" title="Actividades pendientes">
-                            <span class="material-symbols-outlined" aria-hidden="true">notifications</span>
-                        </a>
-                        <button type="button" class="crm-btn crm-btn--ghost crm-btn--icon" data-dialog-open="command-palette-dialog" aria-label="Atajos y ayuda" title="Atajos rápidos">
-                            <span class="material-symbols-outlined" aria-hidden="true">help</span>
-                        </button>
-                    </div>
                 </div>
             </header>
 
@@ -260,7 +251,6 @@
                     <x-ui.button href="{{ route('activities.index') }}" variant="secondary" size="sm" icon="check_circle">Actividades</x-ui.button>
                 </div>
                 <div class="crm-row crm-row--end">
-                    <x-ui.button type="button" variant="ghost" data-dialog-close>Cerrar (ESC)</x-ui.button>
                     <x-ui.button type="submit" variant="primary" icon="search">Buscar Contactos</x-ui.button>
                 </div>
             </form>

@@ -1,3 +1,5 @@
+import { transitionView } from '../view-transitions.js';
+
 class CrmHtmlAjax extends HTMLElement {
     constructor() {
         super();
@@ -50,7 +52,10 @@ class CrmHtmlAjax extends HTMLElement {
             return;
         }
         if (event.detail?.url) {
-            const request = this.reload(event.detail.url, { deferRender: Boolean(event.detail.deferRender) });
+            const request = this.reload(event.detail.url, {
+                deferRender: Boolean(event.detail.deferRender),
+                animate: true,
+            });
             event.detail.requests?.push(request);
         }
     }
@@ -66,10 +71,10 @@ class CrmHtmlAjax extends HTMLElement {
         const params = new URLSearchParams(new FormData(form));
         const baseUrl = (form.getAttribute('action') || this.getAttribute('url') || window.location.pathname).split('?')[0];
         const nextUrl = `${baseUrl}?${params.toString()}`;
-        this.reload(nextUrl);
+        this.reload(nextUrl, { animate: true });
     }
 
-    async reload(overrideUrl = null, { deferRender = false } = {}) {
+    async reload(overrideUrl = null, { deferRender = false, animate = false } = {}) {
         const url = overrideUrl || this.getAttribute('url') || window.location.href;
         const fragment = this.getAttribute('fragment') || '';
 
@@ -128,7 +133,11 @@ class CrmHtmlAjax extends HTMLElement {
                 deferred = true;
                 return { commit, discard: finish, isCurrent: () => this.abortController === controller && !controller.signal.aborted };
             }
-            commit();
+            if (animate) {
+                await transitionView(commit);
+            } else {
+                commit();
+            }
         } catch (error) {
             if (this.abortController === controller && !controller.signal.aborted && error.name !== 'AbortError') {
                 window.dispatchEvent(

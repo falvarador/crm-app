@@ -102,7 +102,13 @@
                                             <span class="tabular-nums" data-stage-count>{{ count($stageDeals) }} deals</span>
                                         </x-ui.badge>
                                     </div>
-                                    <button type="button" class="crm-btn crm-btn--ghost crm-btn--icon" data-dialog-open="create-deal-dialog" aria-label="Añadir oportunidad en {{ $stageMeta['label'] }}">
+                                    <button
+                                        type="button"
+                                        class="crm-btn crm-btn--ghost crm-btn--icon"
+                                        data-dialog-open="create-deal-dialog"
+                                        data-deal-stage="{{ $stageKey }}"
+                                        aria-label="Añadir oportunidad en {{ $stageMeta['label'] }}"
+                                    >
                                         <span class="material-symbols-outlined crm-icon crm-icon--sm" aria-hidden="true">add</span>
                                     </button>
                                 </header>
@@ -217,10 +223,7 @@
                             <td class="is-numeric">{{ $deal['probability'] }}%</td>
                             <td class="is-numeric">{{ $deal['close_date'] }}</td>
                             <td>
-                                <div class="crm-row crm-row--nowrap">
-                                    <span class="crm-avatar crm-avatar--sm" aria-hidden="true">{{ $deal['owner'] }}</span>
-                                    <span>{{ $deal['owner_name'] }}</span>
-                                </div>
+                                {{ $deal['owner_name'] }}
                             </td>
                         </tr>
                     @endforeach

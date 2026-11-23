@@ -209,22 +209,14 @@
       gap: var(--space-xs);
     }
 
-    & .crm-sidebar__workspace-btn {
+    & .crm-sidebar__workspace {
       display: flex;
       align-items: center;
       gap: var(--space-sm);
       inline-size: 100%;
       padding: var(--space-xs);
-      border: 0;
       border-radius: var(--radius-md);
-      background: transparent;
-      cursor: pointer;
       min-inline-size: 0;
-      transition: background-color var(--transition-fast);
-
-      &:hover {
-        background-color: var(--color-surface-container-low);
-      }
     }
 
     & .crm-sidebar__logo-mark {
@@ -254,14 +246,6 @@
       font-weight: 600;
       line-height: 1.2;
       color: var(--color-on-surface);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    & .crm-sidebar__workspace-domain {
-      font-size: var(--text-label-sm);
-      color: var(--color-on-surface-variant);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -412,7 +396,7 @@
         padding-inline: var(--space-xs);
       }
 
-      & .crm-sidebar__workspace-btn {
+      & .crm-sidebar__workspace {
         display: none;
       }
 
@@ -526,11 +510,6 @@
       }
     }
 
-    & .crm-topbar__icon-group {
-      display: flex;
-      align-items: center;
-      gap: var(--space-xs);
-    }
   }
 
   .crm-main {

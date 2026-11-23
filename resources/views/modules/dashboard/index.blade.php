@@ -1,14 +1,11 @@
 <x-ui.layout title="Dashboard Ejecutivo" active="dashboard" breadcrumb="Dashboard Ejecutivo">
     <section class="crm-page-header">
         <div class="crm-page-header__title-group">
-            <div class="crm-page-header__eyebrow">
-                <x-ui.badge variant="emerald">Operaciones en Vivo</x-ui.badge>
-            </div>
             <div class="crm-page-header__title-row">
                 <h1 class="crm-page-header__title">Dashboard Ejecutivo</h1>
             </div>
             <p class="crm-page-header__subtitle">
-                Resumen de rendimiento comercial y seguimiento en tiempo real
+                Resumen de rendimiento comercial y seguimiento de tareas
             </p>
         </div>
 
@@ -43,7 +40,7 @@
                 </button>
             </div>
 
-            <x-ui.button variant="secondary" icon="download" href="{{ route('deals.index') }}">
+            <x-ui.button variant="secondary" icon="view_kanban" href="{{ route('deals.index') }}">
                 Ver Pipeline
             </x-ui.button>
             <x-ui.button variant="primary" icon="add_circle" data-dialog-open="dashboard-deal-dialog">
@@ -128,22 +125,6 @@
                             @forelse($tasks as $task)
                                 <div class="crm-task-item {{ $task['completed'] ? 'crm-task-item--done' : '' }}">
                                     <div class="crm-task-item__main">
-                                        <crm-form-ajax event-keys="activities:updated,kpi:updated">
-                                            <form action="{{ route('activities.toggle', $task['id']) }}" method="POST">
-                                                @csrf
-                                                @method('PATCH')
-                                                <button
-                                                    type="submit"
-                                                    class="crm-btn crm-btn--ghost crm-btn--icon"
-                                                    aria-label="{{ $task['completed'] ? 'Marcar como pendiente' : 'Marcar como completada' }}"
-                                                >
-                                                    <span class="material-symbols-outlined crm-icon {{ $task['completed'] ? 'crm-icon--tertiary' : 'crm-icon--muted' }}" aria-hidden="true">
-                                                        {{ $task['completed'] ? 'check_circle' : 'radio_button_unchecked' }}
-                                                    </span>
-                                                </button>
-                                            </form>
-                                        </crm-form-ajax>
-
                                         <div class="crm-task-item__content">
                                             <div class="crm-task-item__title-row">
                                                 <span class="crm-task-item__title">{{ $task['subject'] }}</span>
@@ -181,7 +162,13 @@
                                             </form>
                                         </crm-form-ajax>
                                     @else
-                                        <span class="material-symbols-outlined crm-icon crm-icon--tertiary" aria-label="Completada">done_all</span>
+                                        <crm-form-ajax event-keys="activities:updated,kpi:updated">
+                                            <form action="{{ route('activities.toggle', $task['id']) }}" method="POST">
+                                                @csrf
+                                                @method('PATCH')
+                                                <x-ui.button type="submit" variant="secondary" size="sm">Reabrir</x-ui.button>
+                                            </form>
+                                        </crm-form-ajax>
                                     @endif
                                 </div>
                             @empty
@@ -278,7 +265,6 @@
                             </td>
                             <td>
                                 <span class="crm-account-pill">
-                                    <span class="crm-avatar crm-avatar--sm crm-avatar--secondary" aria-hidden="true">{{ mb_substr($deal['company_name'], 0, 1) }}</span>
                                     <span>{{ $deal['company_name'] }}</span>
                                 </span>
                             </td>
@@ -297,7 +283,6 @@
                             <td class="is-numeric">{{ $deal['close_date'] }}</td>
                             <td>
                                 <div class="crm-row crm-row--nowrap">
-                                    <span class="crm-avatar crm-avatar--sm" aria-hidden="true">{{ $deal['owner'] }}</span>
                                     <span>{{ $deal['owner_name'] }}</span>
                                 </div>
                             </td>
@@ -305,8 +290,7 @@
                     @endforeach
 
                     <x-slot:footer>
-                        <span>Mostrando {{ count($closingDeals) }} oportunidades clave</span>
-                        <a href="{{ route('deals.index') }}" class="crm-stat-card__link">Abrir tablero Kanban completo →</a>
+                        <a href="{{ route('deals.index') }}" class="crm-stat-card__link">Abrir tablero Kanban completo</a>
                     </x-slot:footer>
                 </x-ui.table>
             </x-ui.card>

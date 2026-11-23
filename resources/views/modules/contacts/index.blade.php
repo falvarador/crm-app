@@ -10,9 +10,6 @@
                 >
                     @fragment('contacts-kpi')
                         <div class="crm-row">
-                            <x-ui.badge variant="neutral" :dot="false">
-                                <span class="tabular-nums">{{ $totalContacts }} contactos</span>
-                            </x-ui.badge>
                             <x-ui.badge variant="emerald">
                                 Calificados: <span class="tabular-nums">{{ $qualifiedCount }}</span>
                             </x-ui.badge>
@@ -82,7 +79,9 @@
 
                     <div class="crm-toolbar__actions">
                         <x-ui.button type="submit" variant="secondary" size="sm" icon="search">Filtrar</x-ui.button>
-                        <x-ui.button href="{{ route('contacts.index') }}" variant="ghost" size="sm" icon="restart_alt">Limpiar</x-ui.button>
+                        @if(($filters['search'] !== '' || $filters['status'] !== '' || $filters['source'] !== '' || $filters['owner'] !== '') && count($contacts) > 0)
+                            <x-ui.button href="{{ route('contacts.index') }}" variant="ghost" size="sm" icon="restart_alt">Limpiar</x-ui.button>
+                        @endif
                     </div>
                 </form>
             </search>
@@ -103,19 +102,15 @@
                             <th>Contacto Directo</th>
                             <th>Origen</th>
                             <th>Estado Lead</th>
-                            <th class="is-actions">Acciones Rápidas</th>
                         </tr>
                     </x-slot:head>
 
                     @foreach($contacts as $contact)
                         <tr>
                             <td>
-                                <div class="crm-row crm-row--nowrap">
-                                    <span class="crm-avatar" aria-hidden="true">{{ $contact['initials'] }}</span>
-                                    <div class="crm-col">
-                                        <strong>{{ $contact['name'] }}</strong>
-                                        <span class="crm-card__subtitle">{{ $contact['role'] }}</span>
-                                    </div>
+                                <div class="crm-col">
+                                    <strong>{{ $contact['name'] }}</strong>
+                                    <span class="crm-card__subtitle">{{ $contact['role'] }}</span>
                                 </div>
                             </td>
                             <td>
@@ -138,11 +133,6 @@
                             <td>
                                 <x-ui.badge :variant="$contact['status_variant']">{{ $contact['status'] }}</x-ui.badge>
                             </td>
-                            <td class="is-actions">
-                                <div class="crm-row crm-row--end crm-row--nowrap">
-                                    <x-ui.button href="{{ route('deals.index') }}" variant="ghost" size="sm">Ver oportunidades</x-ui.button>
-                                </div>
-                            </td>
                         </tr>
                     @endforeach
 
@@ -151,7 +141,6 @@
                             Mostrando <strong class="tabular-nums">{{ count($contacts) }}</strong> de
                             <strong class="tabular-nums">{{ $totalContacts }}</strong> contactos
                         </span>
-                        <span class="crm-card__subtitle">Actualización parcial vía SSR Híbrido</span>
                     </x-slot:footer>
                 </x-ui.table>
             </div>

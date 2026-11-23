@@ -70,6 +70,42 @@ test('hybrid ssr endpoints return only requested blade fragment when X-Fragment-
     'activities feed' => ['/activities', 'activities-feed', 'Demo comercial con VP de TechCorp'],
 ]);
 
+test('shared navigation keeps real actions without duplicate or placeholder controls', function () {
+    $response = $this->get('/dashboard');
+
+    $response->assertOk()
+        ->assertSee('Aura CRM')
+        ->assertSee('>CRM</div>', false)
+        ->assertSee(route('activities.index'))
+        ->assertDontSee('aura.attio.io')
+        ->assertDontSee('Actividades pendientes')
+        ->assertDontSee('Atajos y ayuda')
+        ->assertDontSee('Cerrar (ESC)');
+
+    expect(substr_count($response->getContent(), 'data-dialog-open="command-palette-dialog"'))->toBe(1);
+});
+
+test('dashboard presents one text action for each task state', function () {
+    $activity = Activity::query()
+        ->where('subject', 'Demo comercial con VP de TechCorp')
+        ->firstOrFail();
+
+    $response = $this->get('/dashboard');
+
+    $response->assertOk()
+        ->assertSee('Completar')
+        ->assertDontSee('Marcar como completada');
+
+    $this->patchJson("/activities/{$activity->id}/toggle")
+        ->assertOk()
+        ->assertJsonPath('activity.completed', true);
+
+    $this->get('/dashboard')
+        ->assertOk()
+        ->assertSee('Reabrir')
+        ->assertDontSee('Marcar como pendiente');
+});
+
 test('empty contact search offers to clear filters', function () {
     $response = $this->get('/contacts?search=sin-coincidencias-para-la-prueba');
 
@@ -130,6 +166,18 @@ test('empty pipeline filters offer to clear the filters', function () {
     ]);
 });
 
+test('kanban create actions retain each column stage in the existing dialog', function () {
+    $response = $this->get('/deals');
+
+    $response->assertOk()
+        ->assertSee('name="stage"', false)
+        ->assertSee('data-deal-stage="prospecto"', false)
+        ->assertSee('data-deal-stage="propuesta"', false)
+        ->assertSee('data-deal-stage="negociacion"', false)
+        ->assertSee('data-deal-stage="ganada"', false)
+        ->assertSee('data-deal-stage="perdida"', false);
+});
+
 test('empty dashboard tasks offer a direct action', function () {
     $this->actingAs(User::factory()->create(['role' => 'vendedor']));
 
@@ -139,6 +187,56 @@ test('empty dashboard tasks offer a direct action', function () {
         'No hay tareas programadas para hoy.',
         'Agregar actividad',
     ]);
+});
+
+test('activities page keeps one concise metrics summary without live claims', function () {
+    $response = $this->get('/activities');
+
+    $response->assertOk()
+        ->assertSee('Pendientes')
+        ->assertSee('Vencidas')
+        ->assertSee('Hechas')
+        ->assertDontSee('Resumen de Actividades')
+        ->assertDontSee('Gestión de Pipeline')
+        ->assertDontSee('Tiempo Real');
+});
+
+test('contact filters expose one useful reset action and no generic opportunity shortcut', function () {
+    $this->get('/contacts')
+        ->assertOk()
+        ->assertDontSee('Limpiar')
+        ->assertDontSee('Ver oportunidades')
+        ->assertDontSee('Actualización parcial vía SSR Híbrido')
+        ->assertDontSee('1 contactos');
+
+    $this->get('/contacts?status=Nuevo%20Lead')
+        ->assertOk()
+        ->assertSee('Limpiar');
+
+    $emptyFilteredResponse = $this->get('/contacts?search=sin-coincidencias-para-la-prueba');
+
+    $emptyFilteredResponse->assertOk()
+        ->assertSee('Limpiar filtros')
+        ->assertDontSee('>Limpiar</a>', false);
+});
+
+test('company filters expose one useful reset action without duplicate icons or opportunity shortcuts', function () {
+    $this->get('/companies')
+        ->assertOk()
+        ->assertDontSee('Limpiar')
+        ->assertDontSee('filter_list')
+        ->assertDontSee('1 Empresas')
+        ->assertDontSee('Ver oportunidades');
+
+    $this->get('/companies?view=table&status=Prospecto')
+        ->assertOk()
+        ->assertSee('Limpiar');
+
+    $emptyFilteredResponse = $this->get('/companies?view=table&status=Activa');
+
+    $emptyFilteredResponse->assertOk()
+        ->assertSee('Limpiar filtros')
+        ->assertDontSee('>Limpiar</a>', false);
 });
 
 test('form errors have a persistent live region', function () {

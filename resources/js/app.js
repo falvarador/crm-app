@@ -4,6 +4,7 @@ import './components/crm-form-validate';
 import './components/crm-form-ajax';
 import './components/crm-html-ajax';
 import './components/crm-kanban';
+import { commitFragmentBatch, transitionView } from './view-transitions.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     initThemeToggle();
@@ -13,7 +14,27 @@ document.addEventListener('DOMContentLoaded', () => {
     initPipelineViewToggle();
     initActivityTypeSelector();
     initCompanyOptions();
+    initDealStageSelection();
 });
+
+function initDealStageSelection() {
+    document.addEventListener('click', (event) => {
+        const trigger = event.target.closest('[data-dialog-open="create-deal-dialog"]');
+        if (!trigger) return;
+
+        const stageSelect = document.querySelector('#create-deal-dialog select[name="stage"]');
+        if (!stageSelect) return;
+
+        const defaultStage =
+            stageSelect.querySelector('option[selected]')?.value ||
+            stageSelect.options[0]?.value;
+        const requestedStage = trigger.getAttribute('data-deal-stage');
+        const hasRequestedStage = Array.from(stageSelect.options).some((option) => option.value === requestedStage);
+        const stage = hasRequestedStage ? requestedStage : defaultStage;
+
+        if (stage) stageSelect.value = stage;
+    }, true);
+}
 
 function initCompanyOptions() {
     window.addEventListener('companies:updated', (event) => {
@@ -201,21 +222,25 @@ function initFragmentFilterButtons() {
         });
 
         if (deferRender) {
-            Promise.all(requests).then((results) => {
-                if (results.length === fragments.length && results.every((result) => result?.isCurrent())) {
-                    results.forEach((result) => result.commit());
-                } else {
-                    results.forEach((result) => result?.discard());
-                    if (results.length !== fragments.length) {
-                        window.dispatchEvent(new CustomEvent('crm:toast', {
-                            detail: {
-                                title: 'Error de actualización',
-                                message: 'No se encontraron todos los fragmentos necesarios.',
-                                variant: 'error',
-                            },
-                        }));
-                    }
+            Promise.all(requests).then(async (results) => {
+                await commitFragmentBatch(results, fragments.length);
+                if (results.length !== fragments.length) {
+                    window.dispatchEvent(new CustomEvent('crm:toast', {
+                        detail: {
+                            title: 'Error de actualización',
+                            message: 'No se encontraron todos los fragmentos necesarios.',
+                            variant: 'error',
+                        },
+                    }));
                 }
+            }).catch((error) => {
+                window.dispatchEvent(new CustomEvent('crm:toast', {
+                    detail: {
+                        title: 'Error de actualización',
+                        message: error.message || 'No se pudieron actualizar los fragmentos.',
+                        variant: 'error',
+                    },
+                }));
             });
         }
     });
@@ -268,7 +293,7 @@ function initPipelineViewToggle() {
         const viewBtn = event.target.closest('[data-pipeline-view]');
         if (!viewBtn) return;
 
-        showPipelineView(viewBtn.getAttribute('data-pipeline-view'));
+        transitionView(() => showPipelineView(viewBtn.getAttribute('data-pipeline-view')));
     });
 
     document.addEventListener('crm:fragment-loaded', (event) => {
