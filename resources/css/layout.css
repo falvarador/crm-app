@@ -286,6 +286,10 @@
       }
     }
 
+    & .crm-sidebar__mobile-close {
+      display: none;
+    }
+
     & .crm-sidebar__action-box {
       padding-inline: var(--space-md);
       padding-block: var(--space-sm);
@@ -675,6 +679,15 @@
     .crm-sidebar {
       inline-size: var(--sidebar-width);
       transform: translateX(-100%);
+
+      & .crm-sidebar__collapse-btn {
+        display: none;
+      }
+
+      & .crm-sidebar__mobile-close {
+        display: inline-flex;
+        flex-shrink: 0;
+      }
 
       &[data-mobile-open="true"] {
         transform: translateX(0);

@@ -30,24 +30,48 @@ function initCompanyOptions() {
 
 function initThemeToggle() {
     const root = document.documentElement;
-    const savedTheme = window.localStorage.getItem('aura-theme');
-    if (savedTheme === 'light' || savedTheme === 'dark') {
-        root.setAttribute('data-theme', savedTheme);
-    }
+    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const updateEffectiveTheme = () => {
+        const mode = root.dataset.theme || 'system';
+        root.dataset.effectiveTheme = mode === 'system' ? (systemTheme.matches ? 'dark' : 'light') : mode;
+        updateThemeButtons(mode);
+    };
+
+    systemTheme.addEventListener('change', () => {
+        if (root.dataset.theme === 'system') updateEffectiveTheme();
+    });
 
     document.addEventListener('click', (event) => {
         const themeBtn = event.target.closest('[data-theme-set]');
         if (!themeBtn) return;
 
         const mode = themeBtn.getAttribute('data-theme-set');
-        if (mode === 'light' || mode === 'dark') {
+        if (mode === 'system' || mode === 'light' || mode === 'dark') {
             root.setAttribute('data-theme', mode);
-            window.localStorage.setItem('aura-theme', mode);
-            updateThemeButtons(mode);
+            savePreference('aura-theme', mode);
+            updateEffectiveTheme();
         }
     });
 
-    updateThemeButtons(root.getAttribute('data-theme') || 'light');
+    updateEffectiveTheme();
+}
+
+function readPreference(key) {
+    try {
+        return window.localStorage.getItem(key);
+    } catch (error) {
+        console.warn('No se pudo leer la preferencia.', error);
+        return null;
+    }
+}
+
+function savePreference(key, value) {
+    try {
+        window.localStorage.setItem(key, value);
+    } catch (error) {
+        console.warn('No se pudo guardar la preferencia.', error);
+    }
 }
 
 function updateThemeButtons(activeTheme) {
@@ -62,25 +86,53 @@ function initSidebarToggle() {
     const sidebar = document.querySelector('[data-crm-sidebar]');
     if (!sidebar) return;
 
-    const savedCollapsed = window.localStorage.getItem('aura-sidebar-collapsed') === 'true';
-    if (savedCollapsed) {
-        sidebar.setAttribute('data-collapsed', 'true');
-    }
+    const mobileToggle = document.querySelector('[data-sidebar-mobile-toggle]');
+    const collapseButton = sidebar.querySelector('[data-sidebar-collapse]');
+    const mobileViewport = window.matchMedia('(max-width: 63.99rem)');
+    let collapsed = readPreference('aura-sidebar-collapsed') === 'true';
+
+    const setMobileOpen = (open, returnFocus = false) => {
+        if (!open && returnFocus && sidebar.contains(document.activeElement)) {
+            mobileToggle?.focus();
+        }
+        sidebar.setAttribute('data-mobile-open', String(open));
+        sidebar.inert = mobileViewport.matches && !open;
+        mobileToggle?.setAttribute('aria-expanded', String(open));
+        if (open) sidebar.querySelector('a[href]')?.focus();
+    };
+
+    const syncViewport = () => {
+        sidebar.setAttribute('data-collapsed', String(!mobileViewport.matches && collapsed));
+        collapseButton?.setAttribute('aria-expanded', String(!collapsed));
+        setMobileOpen(false, true);
+    };
+
+    mobileViewport.addEventListener('change', syncViewport);
+    syncViewport();
 
     document.addEventListener('click', (event) => {
         const collapseBtn = event.target.closest('[data-sidebar-collapse]');
         if (collapseBtn) {
-            const next = sidebar.getAttribute('data-collapsed') !== 'true';
-            sidebar.setAttribute('data-collapsed', next ? 'true' : 'false');
-            collapseBtn.setAttribute('aria-expanded', next ? 'false' : 'true');
-            window.localStorage.setItem('aura-sidebar-collapsed', String(next));
+            collapsed = !collapsed;
+            sidebar.setAttribute('data-collapsed', String(collapsed));
+            collapseBtn.setAttribute('aria-expanded', String(!collapsed));
+            savePreference('aura-sidebar-collapsed', String(collapsed));
             return;
         }
 
         const mobileBtn = event.target.closest('[data-sidebar-mobile-toggle]');
         if (mobileBtn) {
-            const next = sidebar.getAttribute('data-mobile-open') !== 'true';
-            sidebar.setAttribute('data-mobile-open', next ? 'true' : 'false');
+            setMobileOpen(sidebar.getAttribute('data-mobile-open') !== 'true', true);
+        } else if (mobileViewport.matches && sidebar.getAttribute('data-mobile-open') === 'true' &&
+            (event.target.closest('[data-sidebar-mobile-close]') || !sidebar.contains(event.target))) {
+            setMobileOpen(false, true);
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && mobileViewport.matches &&
+            sidebar.getAttribute('data-mobile-open') === 'true' && !document.querySelector('dialog:modal')) {
+            setMobileOpen(false, true);
         }
     });
 }
@@ -114,44 +166,89 @@ function initKeyboardShortcuts() {
 }
 
 function initFragmentFilterButtons() {
+    const pendingSelections = new Map();
+
     document.addEventListener('click', (event) => {
         const trigger = event.target.closest('[data-fragment-nav]');
-        if (!trigger) return;
+        if (!trigger || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
 
         event.preventDefault();
-        const url = trigger.getAttribute('data-fragment-nav') || trigger.getAttribute('href');
+        let url = trigger.getAttribute('data-fragment-nav') || trigger.getAttribute('href');
         const fragmentsRaw = trigger.getAttribute('data-target-fragments') || '';
         const fragments = fragmentsRaw
             .split(',')
             .map((item) => item.trim())
             .filter(Boolean);
 
-        const group = trigger.closest('[role="tablist"], .crm-segmented');
-        if (group) {
-            group.querySelectorAll('[data-fragment-nav]').forEach((btn) => {
-                btn.classList.remove('is-active');
-                btn.setAttribute('aria-pressed', 'false');
-            });
-            trigger.classList.add('is-active');
-            trigger.setAttribute('aria-pressed', 'true');
+        const group = trigger.closest('[role="group"], .crm-segmented');
+        const target = document.querySelector(`crm-html-ajax[fragment="${CSS.escape(fragments[0] || '')}"]`);
+        const destination = new URL(url, window.location.href);
+        if (trigger.matches('a') && destination.searchParams.has('view') && target?.getAttribute('url')) {
+            const current = new URL(target.getAttribute('url'), window.location.href);
+            current.searchParams.set('view', destination.searchParams.get('view'));
+            url = current.href;
         }
 
+        const requests = [];
+        const deferRender = fragments.length > 1;
         fragments.forEach((fragment) => {
+            if (group) pendingSelections.set(fragment, { group, trigger, url });
             document.dispatchEvent(
                 new CustomEvent('crm:fragment-query', {
-                    detail: { fragment, url },
+                    detail: { fragment, url, deferRender, requests },
                 })
             );
+        });
+
+        if (deferRender) {
+            Promise.all(requests).then((results) => {
+                if (results.length === fragments.length && results.every((result) => result?.isCurrent())) {
+                    results.forEach((result) => result.commit());
+                } else {
+                    results.forEach((result) => result?.discard());
+                    if (results.length !== fragments.length) {
+                        window.dispatchEvent(new CustomEvent('crm:toast', {
+                            detail: {
+                                title: 'Error de actualización',
+                                message: 'No se encontraron todos los fragmentos necesarios.',
+                                variant: 'error',
+                            },
+                        }));
+                    }
+                }
+            });
+        }
+    });
+
+    document.addEventListener('crm:fragment-loaded', (event) => {
+        const { fragment, url } = event.detail || {};
+        if (fragment === 'companies-list') {
+            document.querySelectorAll('a[data-fragment-nav][data-target-fragments="companies-list"]').forEach((link) => {
+                const destination = new URL(link.href);
+                const current = new URL(url, window.location.href);
+                current.searchParams.set('view', destination.searchParams.get('view'));
+                link.href = current.href;
+                link.setAttribute('data-fragment-nav', current.href);
+            });
+        }
+        const selection = pendingSelections.get(fragment);
+        if (!selection || selection.url !== url) return;
+        pendingSelections.delete(fragment);
+        selection.group.querySelectorAll('[data-fragment-nav]').forEach((btn) => {
+            const active = btn === selection.trigger;
+            btn.classList.toggle('is-active', active);
+            if (btn.matches('a')) {
+                if (active) btn.setAttribute('aria-current', 'true');
+                else btn.removeAttribute('aria-current');
+            } else {
+                btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+            }
         });
     });
 }
 
 function initPipelineViewToggle() {
-    document.addEventListener('click', (event) => {
-        const viewBtn = event.target.closest('[data-pipeline-view]');
-        if (!viewBtn) return;
-
-        const targetView = viewBtn.getAttribute('data-pipeline-view');
+    const showPipelineView = (targetView) => {
         const kanbanPanel = document.getElementById('deals-kanban-panel');
         const listPanel = document.getElementById('deals-list-panel');
         if (!kanbanPanel || !listPanel) return;
@@ -163,12 +260,34 @@ function initPipelineViewToggle() {
         document.querySelectorAll('[data-pipeline-view]').forEach((btn) => {
             const active = btn.getAttribute('data-pipeline-view') === targetView;
             btn.classList.toggle('is-active', active);
-            btn.setAttribute('aria-selected', active ? 'true' : 'false');
+            btn.setAttribute('aria-pressed', active ? 'true' : 'false');
         });
+    };
+
+    document.addEventListener('click', (event) => {
+        const viewBtn = event.target.closest('[data-pipeline-view]');
+        if (!viewBtn) return;
+
+        showPipelineView(viewBtn.getAttribute('data-pipeline-view'));
+    });
+
+    document.addEventListener('crm:fragment-loaded', (event) => {
+        if (event.detail?.fragment !== 'deals-board') return;
+        const activeView = document.querySelector('[data-pipeline-view][aria-pressed="true"]');
+        if (activeView) showPipelineView(activeView.getAttribute('data-pipeline-view'));
     });
 }
 
 function initActivityTypeSelector() {
+    const defaultActivityType = document.querySelector('[data-activity-type-input]')?.value;
+    const updateSelection = (container, type) => {
+        container.querySelectorAll('[data-activity-type-pill]').forEach((btn) => {
+            const active = btn.getAttribute('data-activity-type-pill') === type;
+            btn.classList.toggle('is-active', active);
+            btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
+    };
+
     document.addEventListener('click', (event) => {
         const pill = event.target.closest('[data-activity-type-pill]');
         if (!pill) return;
@@ -178,16 +297,20 @@ function initActivityTypeSelector() {
         const hiddenInput = document.querySelector('[data-activity-type-input]');
         if (!container || !type) return;
 
-        container.querySelectorAll('[data-activity-type-pill]').forEach((btn) => {
-            btn.classList.remove('is-active');
-            btn.setAttribute('aria-pressed', 'false');
-        });
-
-        pill.classList.add('is-active');
-        pill.setAttribute('aria-pressed', 'true');
+        updateSelection(container, type);
 
         if (hiddenInput) {
             hiddenInput.value = type;
         }
+    });
+
+    document.addEventListener('reset', (event) => {
+        const hiddenInput = event.target.querySelector('[data-activity-type-input]');
+        const container = document.querySelector('[data-activity-type-group]');
+        if (!hiddenInput || !container) return;
+        window.setTimeout(() => {
+            hiddenInput.value = defaultActivityType;
+            updateSelection(container, defaultActivityType);
+        });
     });
 }

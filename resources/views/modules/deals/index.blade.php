@@ -10,12 +10,12 @@
         </div>
 
         <div class="crm-page-header__controls">
-            <div class="crm-segmented" role="tablist" aria-label="Cambiar vista del pipeline">
-                <button type="button" role="tab" class="crm-segmented__btn is-active" aria-selected="true" data-pipeline-view="kanban">
+            <div class="crm-segmented" role="group" aria-label="Cambiar vista del pipeline">
+                <button type="button" class="crm-segmented__btn is-active" aria-pressed="true" aria-controls="deals-kanban-panel" data-pipeline-view="kanban">
                     <span class="material-symbols-outlined crm-icon crm-icon--sm" aria-hidden="true">view_kanban</span>
                     <span>Tablero Kanban</span>
                 </button>
-                <button type="button" role="tab" class="crm-segmented__btn" aria-selected="false" data-pipeline-view="list">
+                <button type="button" class="crm-segmented__btn" aria-pressed="false" aria-controls="deals-list-panel" data-pipeline-view="list">
                     <span class="material-symbols-outlined crm-icon crm-icon--sm" aria-hidden="true">format_list_bulleted</span>
                     <span>Vista Lista</span>
                 </button>
@@ -68,6 +68,17 @@
     >
         @fragment('deals-board')
             <div id="deals-kanban-panel">
+                @if(count($deals) === 0)
+                    <div class="crm-table-empty">
+                        <h2 class="crm-table-empty__title">Sin oportunidades en esta vista</h2>
+                        <p class="crm-table-empty__desc">No hay oportunidades para mostrar con los filtros actuales.</p>
+                        @if($filters['owner'] !== '' || $filters['stage'] !== '')
+                            <x-ui.button href="{{ route('deals.index') }}" variant="secondary" icon="restart_alt">Limpiar filtros</x-ui.button>
+                        @else
+                            <x-ui.button variant="primary" icon="add" data-dialog-open="create-deal-dialog">Nueva Oportunidad</x-ui.button>
+                        @endif
+                    </div>
+                @endif
                 <crm-kanban class="crm-kanban" endpoint-template="/deals/{id}/stage" event-keys="deals:updated,kpi:updated">
                     <div class="crm-kanban__board">
                         @foreach($stages as $stageKey => $stageMeta)
@@ -125,7 +136,7 @@
 
                                             <div class="crm-deal-card__company">
                                                 <span class="material-symbols-outlined crm-icon crm-icon--xs crm-icon--muted" aria-hidden="true">domain</span>
-                                                <span class="truncate">{{ $deal['company_name'] }}</span>
+                                                <span>{{ $deal['company_name'] }}</span>
                                             </div>
 
                                             @if(!empty($deal['alert']))
@@ -175,6 +186,13 @@
 
             <div id="deals-list-panel" class="is-hidden">
                 <x-ui.table :empty="count($deals) === 0" emptyTitle="Sin oportunidades" emptyDescription="No hay oportunidades para mostrar en este filtro.">
+                    <x-slot:emptyAction>
+                        @if($filters['owner'] !== '' || $filters['stage'] !== '')
+                            <x-ui.button href="{{ route('deals.index') }}" variant="secondary" icon="restart_alt">Limpiar filtros</x-ui.button>
+                        @else
+                            <x-ui.button variant="primary" icon="add" data-dialog-open="create-deal-dialog">Nueva Oportunidad</x-ui.button>
+                        @endif
+                    </x-slot:emptyAction>
                     <x-slot:head>
                         <tr>
                             <th>Oportunidad</th>

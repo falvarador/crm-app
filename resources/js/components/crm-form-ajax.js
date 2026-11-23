@@ -26,6 +26,7 @@ class CrmFormAjax extends HTMLElement {
         }
 
         const submitButtons = Array.from(this.form.querySelectorAll('button[type="submit"], input[type="submit"]'));
+        const disabledStates = submitButtons.map((btn) => btn.disabled);
         const csrfToken =
             document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ||
             this.form.querySelector('input[name="_token"]')?.value ||
@@ -134,8 +135,8 @@ class CrmFormAjax extends HTMLElement {
             );
         } finally {
             this.form.removeAttribute('aria-busy');
-            submitButtons.forEach((btn) => {
-                btn.disabled = false;
+            submitButtons.forEach((btn, index) => {
+                btn.disabled = disabledStates[index];
             });
         }
     }

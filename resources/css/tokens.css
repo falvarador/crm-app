@@ -18,15 +18,16 @@
     /* Texto y Bordes */
     --color-on-surface: light-dark(oklch(0.22 0.04 265), oklch(0.95 0.01 270));
     --color-on-surface-variant: light-dark(oklch(0.40 0.025 272), oklch(0.76 0.02 268));
-    --color-outline: light-dark(oklch(0.57 0.025 272), oklch(0.64 0.025 270));
+    --color-outline: light-dark(oklch(0.50 0.025 272), oklch(0.72 0.025 270));
     --color-outline-variant: light-dark(oklch(0.83 0.02 272), oklch(0.34 0.025 265));
+    --color-control-border: light-dark(oklch(0.57 0.025 272), oklch(0.64 0.025 270));
     --color-border: light-dark(oklch(0.925 0.018 268), oklch(0.28 0.025 265));
     --color-border-subtle: light-dark(oklch(0.955 0.012 270), oklch(0.24 0.02 265));
 
     /* Brand Primary (Deep Indigo) */
     --color-primary: light-dark(oklch(0.44 0.19 264), oklch(0.68 0.17 265));
-    --color-primary-hover: oklch(from var(--color-primary) calc(l - 0.08) c h);
-    --color-primary-active: oklch(from var(--color-primary) calc(l - 0.12) c h);
+    --color-primary-hover: light-dark(oklch(from var(--color-primary) calc(l - 0.08) c h), oklch(from var(--color-primary) calc(l + 0.04) c h));
+    --color-primary-active: light-dark(oklch(from var(--color-primary) calc(l - 0.12) c h), oklch(from var(--color-primary) calc(l + 0.08) c h));
     --color-on-primary: light-dark(oklch(1 0 0), oklch(0.16 0.04 265));
     --color-primary-container: light-dark(oklch(0.52 0.19 265), oklch(0.42 0.16 265));
     --color-primary-container-hover: oklch(from var(--color-primary-container) calc(l - 0.08) c h);
@@ -161,10 +162,10 @@
   }
 
   :root[data-theme="light"] {
-    color-scheme: light;
+    color-scheme: only light;
   }
 
   :root[data-theme="dark"] {
-    color-scheme: dark;
+    color-scheme: only dark;
   }
 }

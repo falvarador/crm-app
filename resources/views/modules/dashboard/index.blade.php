@@ -13,12 +13,11 @@
         </div>
 
         <div class="crm-page-header__controls">
-            <div class="crm-segmented" role="tablist" aria-label="Periodo de análisis">
+            <div class="crm-segmented" role="group" aria-label="Periodo de análisis">
                 <button
                     type="button"
-                    role="tab"
                     class="crm-segmented__btn {{ $period === '30d' ? 'is-active' : '' }}"
-                    aria-selected="{{ $period === '30d' ? 'true' : 'false' }}"
+                    aria-pressed="{{ $period === '30d' ? 'true' : 'false' }}"
                     data-fragment-nav="{{ route('dashboard', ['period' => '30d']) }}"
                     data-target-fragments="dashboard-kpis,dashboard-closing-deals"
                 >
@@ -26,9 +25,8 @@
                 </button>
                 <button
                     type="button"
-                    role="tab"
                     class="crm-segmented__btn {{ $period === 'month' ? 'is-active' : '' }}"
-                    aria-selected="{{ $period === 'month' ? 'true' : 'false' }}"
+                    aria-pressed="{{ $period === 'month' ? 'true' : 'false' }}"
                     data-fragment-nav="{{ route('dashboard', ['period' => 'month']) }}"
                     data-target-fragments="dashboard-kpis,dashboard-closing-deals"
                 >
@@ -36,9 +34,8 @@
                 </button>
                 <button
                     type="button"
-                    role="tab"
                     class="crm-segmented__btn {{ $period === 'quarter' ? 'is-active' : '' }}"
-                    aria-selected="{{ $period === 'quarter' ? 'true' : 'false' }}"
+                    aria-pressed="{{ $period === 'quarter' ? 'true' : 'false' }}"
                     data-fragment-nav="{{ route('dashboard', ['period' => 'quarter']) }}"
                     data-target-fragments="dashboard-kpis,dashboard-closing-deals"
                 >
@@ -189,6 +186,7 @@
                                 </div>
                             @empty
                                 <p class="crm-card__subtitle">No hay tareas programadas para hoy.</p>
+                                <x-ui.button variant="secondary" icon="add" data-dialog-open="quick-action-dialog">Agregar actividad</x-ui.button>
                             @endforelse
                         </div>
                     </x-ui.card>
